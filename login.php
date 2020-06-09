@@ -21,12 +21,8 @@
         <link rel="stylesheet" href="assets/css/slick.css">
         <link rel="stylesheet" href="assets/css/nice-select.css">
         <link rel="stylesheet" href="assets/css/style.css">
-
 </head>
-    
-
 <body>
-    
     <header>
         <!-- Header Start -->
         <div class="header-area">
@@ -73,7 +69,7 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="hero-cap text-center">
-                                <h2>Watch Shop</h2>
+                                <h2>Login</h2>
                             </div>
                         </div>
                     </div>
@@ -81,68 +77,52 @@
             </div>
         </div>
         <!-- Hero Area End-->
-        <!--================Single Product Area =================-->
-        <div class="product_image_area">
+        <!--================login_part Area =================-->
+        <section class="login_part section_padding ">
             <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-12">
-                <div class="product_img_slide owl-carousel">
-                    <div class="single_product_img">
-                        <img src="assets/img/gallery/gallery1.png" alt="#" class="img-fluid">
-                    </div>
-                    <div class="single_product_img">
-                        <img src="assets/img/gallery/gallery01.png" alt="#" class="img-fluid">
-                    </div>
-                    <div class="single_product_img">
-                        <img src="assets/img/gallery/gallery1.png" alt="#" class="img-fluid">
-                    </div>
-                </div>
-                </div>
-                <div class="col-lg-8">
-                <div class="single_product_text text-center">
-                    <h3>Foam filling cotton slow <br>
-                        rebound pillows</h3>
-                    <p>
-                        Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
-                    </p>
-                    <div class="card_area">
-                        <div class="product_count_area">
-                            <p>Quantity</p>
-                            <div class="product_count d-inline-block">
-                                <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
-                                <input class="product_count_item input-number" type="text" value="1" min="0" max="10">
-                                <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="login_part_text text-center">
+                            <div class="login_part_text_iner">
+                                <h2>New to our Shop?</h2>
+                                <p>There are advances being made in science and technology
+                                    everyday, and a good example of this is the</p>
+                                <a href="register.html" class="btn_3">Create an Account</a>
                             </div>
-                            <p>$5</p>
                         </div>
-                    <div class="add_to_cart">
-                        <a href="#" class="btn_3">add to cart</a>
                     </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <!--================End Single Product Area =================-->
-        <!-- subscribe part here -->
-        <section class="subscribe_part section_padding">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="subscribe_part_content">
-                            <h2>Get promotions & updates!</h2>
-                            <p>Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources credibly innovate granular internal .</p>
-                            <div class="subscribe_form">
-                                <input type="email" placeholder="Enter your mail">
-                                <a href="#" class="btn_1">Subscribe</a>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="login_part_form">
+                            <div class="login_part_form_iner">
+                                <h3>Welcome Back ! <br>
+                                    Please Sign in now</h3>
+                                <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                                    <div class="col-md-12 form-group p_star">
+                                        <input type="text" class="form-control" id="name" name="name" value=""
+                                            placeholder="Username">
+                                    </div>
+                                    <div class="col-md-12 form-group p_star">
+                                        <input type="password" class="form-control" id="password" name="password" value=""
+                                            placeholder="Password">
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <div class="creat_account d-flex align-items-center">
+                                            <input type="checkbox" id="f-option" name="selector">
+                                            <label for="f-option">Remember me</label>
+                                        </div>
+                                        <button type="submit" value="submit" class="btn_3">
+                                            log in
+                                        </button>
+                                        <a class="lost_pass" href="#">forget password?</a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- subscribe part end -->
+        <!--================login_part end =================-->
     </main>
     <footer>
         <!-- Footer Start-->
@@ -171,7 +151,7 @@
                         <div class="footer-copy-right">
                             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
   Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                   
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>               
                         </div>
                     </div>
                     <div class="col-xl-5 col-lg-4 col-md-5">
@@ -200,49 +180,42 @@
         </div>
     </div>
     <!-- Search model end -->
-
+    
     <!-- JS here -->
 
-        <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
-        <!-- Jquery, Popper, Bootstrap -->
-        <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
-        <script src="./assets/js/popper.min.js"></script>
-        <script src="./assets/js/bootstrap.min.js"></script>
-        <!-- Jquery Mobile Menu -->
-        <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
 
-        <!-- Jquery Slick , Owl-Carousel Plugins -->
-        <script src="./assets/js/owl.carousel.min.js"></script>
-        <script src="./assets/js/slick.min.js"></script>
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
 
-        <!-- One Page, Animated-HeadLin -->
-        <script src="./assets/js/wow.min.js"></script>
-        <script src="./assets/js/animated.headline.js"></script>
-        <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+    
+    <!-- Scroll up, nice-select, sticky -->
+    <script src="./assets/js/jquery.scrollUp.min.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
 
-        <!-- Scroll up, nice-select, sticky -->
-        <script src="./assets/js/jquery.scrollUp.min.js"></script>
-        <script src="./assets/js/jquery.nice-select.min.js"></script>
-        <script src="./assets/js/jquery.sticky.js"></script>
-        
-        <!-- contact js -->
-        <script src="./assets/js/contact.js"></script>
-        <script src="./assets/js/jquery.form.js"></script>
-        <script src="./assets/js/jquery.validate.min.js"></script>
-        <script src="./assets/js/mail-script.js"></script>
-        <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
-        
-        <!-- Jquery Plugins, main Jquery -->    
-        <script src="./assets/js/plugins.js"></script>
-        <script src="./assets/js/main.js"></script>
-
-        <!-- swiper js -->
-        <script src="./assets/js/swiper.min.js"></script>
-            <!-- swiper js -->
-        <script src="./assets/js/mixitup.min.js"></script>
-        <script src="./assets/js/jquery.counterup.min.js"></script>
-        <script src="./assets/js/waypoints.min.js"></script>
+    <!-- contact js -->
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
 
 </body>
-
+    
 </html>
