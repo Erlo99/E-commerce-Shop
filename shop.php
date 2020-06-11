@@ -44,24 +44,24 @@
                     <div class="menu-wrapper">
                         <!-- Logo -->
                         <div class="logo">
-                            <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                            <a href="index.php"><img src="assets/img/logo/logo.png" alt=""></a>
                         </div>
                         <!-- Main-menu -->
                         <div class="main-menu d-none d-lg-block">
                             <nav>                                                
                                 <ul id="navigation">  
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="shop.html">shop</a></li>
-                                    <li><a href="about.html">about</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="index.php">Home</a></li>
+                                    <li><a href="shop.php">shop</a></li>
+                                    <li><a href="about.php">about</a></li>
+                                    <li><a href="contact.php">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.html"><span class="flaticon-user"></span></a></li>
-                                <li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a> </li>
+                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                                <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -207,7 +207,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -224,7 +224,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -246,7 +246,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -263,7 +263,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -280,7 +280,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -297,7 +297,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -314,7 +314,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -331,7 +331,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -353,7 +353,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -370,7 +370,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -387,7 +387,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -404,7 +404,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -421,7 +421,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -438,7 +438,7 @@
                                         </div>
                                     </div>
                                     <div class="popular-caption">
-                                        <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                        <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                         <span>$ 45,743</span>
                                     </div>
                                 </div>
@@ -492,7 +492,7 @@
                             <div class="single-footer-caption mb-30">
                                 <!-- logo -->
                                 <div class="footer-logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                    <a href="index.php"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">

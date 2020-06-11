@@ -49,16 +49,16 @@
                     <div class="menu-wrapper">
                         <!-- Logo -->
                         <div class="logo">
-                            <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                            <a href="index.php"><img src="assets/img/logo/logo.png" alt=""></a>
                         </div>
                         <!-- Main-menu -->
                         <div class="main-menu d-none d-lg-block">
                             <nav>                                                
                                 <ul id="navigation">  
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="shop.html">shop</a></li>
-                                    <li><a href="about.html">about</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="index.php">Home</a></li>
+                                    <li><a href="shop.php">shop</a></li>
+                                    <li><a href="about.php">about</a></li>
+                                    <li><a href="contact.php">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -75,7 +75,7 @@
 								echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
 								}
                             ?>
-							<li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a></li>
+							<li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a></li>
 							</ul>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                                     <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
                                     <!-- Hero-btn -->
                                     <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="industries.html" class="btn hero-btn">Shop Now</a>
+                                        <a href="shop.php" class="btn hero-btn">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +124,7 @@
                                     <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
                                     <!-- Hero-btn -->
                                     <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="industries.html" class="btn hero-btn">Shop Now</a>
+                                        <a href="product_details.php" class="btn hero-btn">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                                 <img src="assets/img/gallery/new_product1.png" alt="">
                             </div>
                             <div class="product-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
                                 <img src="assets/img/gallery/new_product2.png" alt="">
                             </div>
                             <div class="product-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 <img src="assets/img/gallery/new_product3.png" alt="">
                             </div>
                             <div class="product-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -246,7 +246,7 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -263,7 +263,7 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -280,7 +280,7 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -297,7 +297,7 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -314,7 +314,7 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -331,7 +331,7 @@
                                 </div>
                             </div>
                             <div class="popular-caption">
-                                <h3><a href="product_details.html">Thermo Ball Etip Gloves</a></h3>
+                                <h3><a href="product_details.php">Thermo Ball Etip Gloves</a></h3>
                                 <span>$ 45,743</span>
                             </div>
                         </div>
@@ -340,7 +340,7 @@
                 <!-- Button -->
                 <div class="row justify-content-center">
                     <div class="room-btn pt-70">
-                        <a href="catagori.html" class="btn view-btn1">View More Products</a>
+                        <a href="shop.php" class="btn view-btn1">View More Products</a>
                     </div>
                 </div>
             </div>
@@ -374,7 +374,7 @@
                         <div class="watch-details mb-40">
                             <h2>Watch of Choice</h2>
                             <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                            <a href="shop.html" class="btn">Show Watches</a>
+                            <a href="shop.php" class="btn">Show Watches</a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-10">
@@ -393,7 +393,7 @@
                         <div class="watch-details mb-40">
                             <h2>Watch of Choice</h2>
                             <p>Enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-                            <a href="shop.html" class="btn">Show Watches</a>
+                            <a href="shop.php" class="btn">Show Watches</a>
                         </div>
                     </div>
                 </div>
@@ -442,7 +442,7 @@
                             <div class="single-footer-caption mb-30">
                                 <!-- logo -->
                                 <div class="footer-logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                    <a href="index.php"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">
