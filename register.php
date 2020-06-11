@@ -1,3 +1,153 @@
+<?php
+	
+	session_start();
+	session_unset();
+	
+	
+	
+	if(isset($_POST['email'])){
+		$all_good = true;
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+		$passwordc = $_POST['passwordc'];
+		$first = $_POST['first'];
+		$last = $_POST['last'];
+		$number = $_POST['number'];
+		
+		
+		//Check first and last name 
+		
+		if(strlen($first)<2){
+			$all_good = false;
+			$_SESSION['e_first'] = '<span style="color:red">Name is too short</span>';
+			
+		} elseif (strlen($first)>20){
+			$all_good = false;
+			$_SESSION['e_first'] = '<span style="color:red">Name is too long</span>';
+			
+		} elseif (!preg_match('/^[a-zA-Z]+$/', $first)){
+			$all_good = false;
+			$_SESSION['e_first'] = '<span style="color:red">Must contain only letters</span>';
+			
+		}
+		if(strlen($last)<2){
+			$all_good = false;
+			$_SESSION['e_last'] = '<span style="color:red">Last name is too short</span>';
+			
+		} elseif (strlen($last)>20){
+			$all_good = false;
+			$_SESSION['e_last'] = '<span style="color:red">Last name is too long</span>';
+			
+		} elseif (!preg_match('/^[a-zA-Z]+$/', $last)){
+			$all_good = false;
+			$_SESSION['e_last'] = '<span style="color:red">Must contain only letters</span>';
+			
+		}
+		//check phone
+		if(strlen($number)!=9){
+			$all_good = false;
+			$_SESSION['e_number'] = '<span style="color:red">Number must contain 9 digits</span>';
+			
+		} elseif (!preg_match('/^[1-9][0-9]*$/', $number)){
+			$all_good = false;
+			$_SESSION['e_number'] = '<span style="color:red">Only digits</span>';
+			
+		}
+		
+		//check email
+		
+		$emailS = filter_var($email, FILTER_SANITIZE_EMAIL);
+		
+		if(!filter_var($emailS, FILTER_VALIDATE_EMAIL) || $emailS != $email){
+			$all_good = false;
+			$_SESSION['e_email'] = '<span style="color:red">Wrong email adress</span>';
+		}
+		
+		//check password
+		
+		
+		if(strlen($password)<7 || strlen($password)>20){
+			$all_good = false;
+			$_SESSION['e_password'] = '<span style="color:red">Password must contain 8-20 characters</span>';
+			
+		} elseif ($password != $passwordc){
+			$all_good = false;
+			$_SESSION['e_passwordc'] = '<span style="color:red">Password must be the same</span>';
+			
+		}
+		
+		$password_hash = password_hash($password, PASSWORD_DEFAULT);
+		
+		//are terms accepted
+		if(!isset($_POST['terms'])){
+			$all_good = false;
+			$_SESSION['e_terms'] = '<p><span style="color:red">You have to accept terms and conditions</span><p>';
+			
+		}
+		
+		//captcha check
+		
+		$secret = "6Lf88KIZAAAAAJTzQqEJ__UvQuEBPNwU379f95z0";
+		
+		$resp = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+		
+		$check = json_decode($resp);
+		
+		if(!($check->success)){
+			$all_good = false;
+			$_SESSION['e_bot'] = '<p><span style="color:red">Prove you are not a bot</span><p>';
+			
+		}
+		
+		require_once "connect.php";
+		mysqli_report(MYSQLI_REPORT_STRICT);
+		
+		
+		try{
+			$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
+			if($connection->connect_errno!=0){
+				throw new Exception(mysqli_connect_errno());
+			} else {
+				//does email exist
+				$result = $connection->query("SELECT id_user FROM users WHERE email='$email'");
+				
+				if(!$result) throw new Exception($connection->error);
+				if($result->num_rows>0){
+					$all_good = false;
+					$_SESSION['e_email'] = '<span style="color:red">Email already registered</span>';
+		
+				}
+				//does number exist
+				$result = $connection->query("SELECT id_user FROM users WHERE phone='$number'");
+				
+				if(!$result) throw new Exception($connection->error);
+				if($result->num_rows>0){
+					$all_good = false;
+					$_SESSION['e_number'] = '<span style="color:red">Number already in use</span>';
+		
+				}
+			
+				if($all_good){
+					if($connection->query("INSERT INTO users(id_user,first,last,password, email, phone) VALUES (NULL, '$first', '$last', '$password_hash', '$email','$number')")){
+						$_SESSION['successful'] = true;
+						
+						header('Location: login.php');
+						
+						
+					} else throw new Exception($connection->error);
+					
+				}
+				
+				$connection->close();
+			}
+		} catch(Exception $e){
+			echo 'Server error!';
+			echo $e;
+		}
+		
+	} 
+?>
+
 <!doctype html>
 <html lang="zxx">
 <head>
@@ -21,6 +171,7 @@
         <link rel="stylesheet" href="assets/css/slick.css">
         <link rel="stylesheet" href="assets/css/nice-select.css">
         <link rel="stylesheet" href="assets/css/style.css">
+		
 </head>
 <body>
     <header>
@@ -85,32 +236,51 @@
                         <div class="billing_details">
 						  <div class="row">
 							<div class="col-lg-8">
-							  <h3>Billing Details</h3>
-							  <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-								<div class="col-md-6 form-group p_star">
-								  <input type="text" class="form-control" id="first" name="name" />
-								  <span class="placeholder" data-placeholder="First name"></span>
+							  <h3>Register</h3>
+							  <form class="row contact_form" action="#" method="post">
+								<div class="col-md-6 form-group ">
+								  <input type="text" class="form-control p_star" id="first" name="first" placeholder="First name"/>
+								  <?php
+									if(isset($_SESSION['e_first']))
+										echo $_SESSION['e_first'];
+								  ?>
 								</div>
 								<div class="col-md-6 form-group p_star">
-								  <input type="text" class="form-control" id="last" name="name" />
-								  <span class="placeholder" data-placeholder="Last name"></span>
+								  <input type="text" class="form-control" id="last" name="last" placeholder="Last name"/>
+									<?php
+									if(isset($_SESSION['e_last']))
+										echo $_SESSION['e_last'];
+									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
-								  <input type="text" class="form-control" id="password" name="password" />
-								  <span class="placeholder" data-placeholder="Password"></span>
+								  <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
+									<?php
+									if(isset($_SESSION['e_password']))
+										echo $_SESSION['e_password'];
+									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
-								  <input type="text" class="form-control" id="password" name="password" />
-								  <span class="placeholder" data-placeholder="Confirm Password"></span>
+								  <input type="password" class="form-control" id="password" name="passwordc" placeholder="Confirm Password" />
+								  <?php
+									if(isset($_SESSION['e_passwordc']))
+										echo $_SESSION['e_passwordc'];
+									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
-								  <input type="text" class="form-control" id="number" name="number" />
-								  <span class="placeholder" data-placeholder="Phone number"></span>
+								  <input type="text" class="form-control" id="number" name="number" placeholder="Phone number"/>
+									<?php
+										if(isset($_SESSION['e_number']))
+										echo $_SESSION['e_number'];
+									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
-								  <input type="email" class="form-control" id="email" name="compemailany" />
-								  <span class="placeholder" data-placeholder="Email Address"></span>
+								  <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" />
+									<?php
+									if(isset($_SESSION['e_email']))
+										echo $_SESSION['e_email'];
+									?>
 								</div>
+								<h3>Biling Details(not mandatory)</h3>
 								<div class="col-md-12 form-group">
 								  <input type="text" class="form-control" id="country" name="country" placeholder="Country"/>
 								  
@@ -133,6 +303,22 @@
 								</div>
 								<div class="col-md-12 form-group">
 								  <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />
+								</div>
+								<div class="col-md-12 form-group">
+									<div class="g-recaptcha" data-sitekey="6Lf88KIZAAAAAOGJe6oELv9CZES-1DgVuRGkANhP"></div>
+									<?php
+									if(isset($_SESSION['e_bot']))
+										echo $_SESSION['e_bot'];
+									?>
+								</div>
+								<div class="col-md-12 form-group">
+								<label>
+								  <input type="checkbox" name="terms"/>  I accept the terms and conditions
+								  </label>
+								  <?php
+									if(isset($_SESSION['e_terms']))
+										echo $_SESSION['e_terms'];
+									?>
 								</div>
 								<div class="col-md-12 form-group">
                                 
@@ -207,9 +393,10 @@
         </div>
     </div>
     <!-- Search model end -->
+	
     
     <!-- JS here -->
-
+	
     <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- Jquery, Popper, Bootstrap -->
     <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
@@ -242,6 +429,9 @@
     <!-- Jquery Plugins, main Jquery -->	
     <script src="./assets/js/plugins.js"></script>
     <script src="./assets/js/main.js"></script>
+	
+	 <!-- ReCaptcha -->
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </body>
     

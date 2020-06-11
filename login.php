@@ -1,3 +1,17 @@
+<?php
+	session_start();
+	
+	if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+		header('Location: index.php');
+		exit();
+	}
+	if((isset($_SESSION['successful'])) && ($_SESSION['successful']==true)){
+		$_SESSION['registered'] = "Your Account has been created ! <br>";
+		
+	}
+
+?>
+
 <!doctype html>
 <html lang="zxx">
 <head>
@@ -87,22 +101,28 @@
                                 <h2>New to our Shop?</h2>
                                 <p>There are advances being made in science and technology
                                     everyday, and a good example of this is the</p>
-                                <a href="register.html" class="btn_3">Create an Account</a>
+                                <a href="register.php" class="btn_3">Create an Account</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="login_part_form">
                             <div class="login_part_form_iner">
-                                <h3>Welcome Back ! <br>
+							<h3>
+							<?php
+									if(isset($_SESSION['successful']))
+										echo $_SESSION['registered'];
+									else echo "Welcome Back ! <br>";
+									?>
+                                
                                     Please Sign in now</h3>
-                                <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                                <form class="row contact_form" action="zaloguj.php" method="post">
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="text" class="form-control" id="name" name="name" value=""
+                                        <input type="email" class="form-control" id="name" name="email"
                                             placeholder="Username">
                                     </div>
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="password" class="form-control" id="password" name="password" value=""
+                                        <input type="password" class="form-control" id="password" name="password"
                                             placeholder="Password">
                                     </div>
                                     <div class="col-md-12 form-group">
@@ -110,6 +130,14 @@
                                             <input type="checkbox" id="f-option" name="selector">
                                             <label for="f-option">Remember me</label>
                                         </div>
+										<div class="creat_account d-flex align-items-center">
+                                            <?php 
+											if(isset($_SESSION['wrong'])) 
+												echo $_SESSION['wrong'];
+											
+											?>
+                                        </div>
+										
                                         <button type="submit" value="submit" class="btn_3">
                                             log in
                                         </button>

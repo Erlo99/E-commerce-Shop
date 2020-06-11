@@ -1,3 +1,8 @@
+<?php
+	session_start();
+	
+?>
+
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
@@ -60,9 +65,18 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.html"><span class="flaticon-user"></span></a></li>
-                                <li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a> </li>
-                            </ul>
+							<?php
+								if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+									echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+										<li> <a href="account.php"><span class="flaticon-user"></span></a></li>
+										<li> <a href="logout.php" style="color:black">Logout</a></li>
+									';
+								} else {
+								echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+								}
+                            ?>
+							<li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a></li>
+							</ul>
                         </div>
                     </div>
                     <!-- Mobile Menu -->
