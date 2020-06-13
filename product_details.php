@@ -1,3 +1,30 @@
+<?php
+	session_start();
+	
+	if(!isset($_GET['id']))
+	{
+		header('Location: shop.php');
+		exit();
+	}
+	
+	$id = $_GET['id'];
+	
+	require_once "connect.php";
+	
+	try{
+		$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
+		if($connection->connect_errno!=0){
+			throw new Exception(mysqli_connect_errno());
+		}
+		else {
+			$sql = "SELECT * FROM products WHERE id_product=".$id;
+			$result = mysqli_query($connection, $sql);
+			if(mysqli_num_rows($result) >0){
+				$row = mysqli_fetch_array($result)
+			
+?>
+
+
 <!doctype html>
 <html lang="zxx">
 <head>
@@ -86,25 +113,16 @@
             <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-12">
-                <div class="product_img_slide owl-carousel">
-                    <div class="single_product_img">
-                        <img src="assets/img/gallery/gallery1.png" alt="#" class="img-fluid">
+                
+                    <div class="single_product_img text-center">
+                        <img src="<?php echo $row['img'] ?>" alt="#" class="img-fluid">
                     </div>
-                    <div class="single_product_img">
-                        <img src="assets/img/gallery/gallery01.png" alt="#" class="img-fluid">
-                    </div>
-                    <div class="single_product_img">
-                        <img src="assets/img/gallery/gallery1.png" alt="#" class="img-fluid">
-                    </div>
-                </div>
+                    
                 </div>
                 <div class="col-lg-8">
                 <div class="single_product_text text-center">
-                    <h3>Foam filling cotton slow <br>
-                        rebound pillows</h3>
-                    <p>
-                        Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources. Credibly innovate granular internal or “organic” sources whereas high standards in web-readiness. Credibly innovate granular internal or organic sources whereas high standards in web-readiness. Energistically scale future-proof core competencies vis-a-vis impactful experiences. Dramatically synthesize integrated schemas. with optimal networks.
-                    </p>
+                    <h3><?php echo $row['title'] ?></h3>
+                    <p><?php echo $row['description'] ?></p>
                     <div class="card_area">
                         <div class="product_count_area">
                             <p>Quantity</p>
@@ -113,7 +131,7 @@
                                 <input class="product_count_item input-number" type="text" value="1" min="0" max="10">
                                 <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
                             </div>
-                            <p>$5</p>
+                            <p><?php echo $row['Price'] ?></p>
                         </div>
                     <div class="add_to_cart">
                         <a href="#" class="btn_3">add to cart</a>
@@ -124,6 +142,19 @@
             </div>
             </div>
         </div>
+		<?php
+		}
+											
+			}
+			
+			$connection->close();
+
+			} catch (Exception $e){
+				echo 'Server error';
+				echo $e;
+			}
+			
+		?>
         <!--================End Single Product Area =================-->
         <!-- subscribe part here -->
         <section class="subscribe_part section_padding">
