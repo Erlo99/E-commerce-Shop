@@ -130,10 +130,7 @@
                                             placeholder="Password">
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <div class="creat_account d-flex align-items-center">
-                                            <input type="checkbox" id="f-option" name="selector">
-                                            <label for="f-option">Remember me</label>
-                                        </div>
+                                        
 										<div class="creat_account d-flex align-items-center">
                                             <?php 
 											if(isset($_SESSION['wrong'])) 
@@ -145,7 +142,7 @@
                                         <button type="submit" value="submit" class="btn_3">
                                             log in
                                         </button>
-                                        <a class="lost_pass" href="#">forget password?</a>
+                                        
                                     </div>
                                 </form>
                             </div>

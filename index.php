@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="assets/css/slick.css">
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="assets/css/ownstyle.css">
 </head>
 
 <body>
@@ -173,19 +174,29 @@
 							
 						?>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                <div class="single-popular-items mb-50 text-center">
-                                    <div class="popular-img">
-                                        <img src="<?php echo $row['img'] ?>" alt="">
-                                        <div class="img-cap">
-                                            <span name="add_cart">Add to cart</span>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="popular-caption">
-                                        <h3><a href="product_details.php?id=<?php echo $row['id_product'] ?>" name="details"><?php echo $row['title'] ?></a></h3>
-                                        <span><?php echo $row['Price'] ?></span>
-                                    </div>
-                                </div>
+								<form action="cart.php?quantity=1&id=<?php echo $row["id_product"]; ?>" method="post">
+									<div class="single-popular-items mb-50 text-center">
+										<div class="popular-img">
+											<img src="<?php echo $row['img'] ?>" alt="">
+											<div class="img-cap">
+												<span>
+													<input  type="hidden" name="hid" id="hid" value="<?php $row['id_product']; ?>"/>
+													<input type="submit" name="add_cart" value="Add to cart" class="addcart"/>
+												</span>
+											</div>
+											
+										</div>
+										<div class="popular-caption">
+										<?php if(isset($_SESSION['already_added']) && $_SESSION['already_id'] == $row["id_product"]){
+											echo $_SESSION['already_added'];
+											unset($_SESSION['already_added']);
+										}
+										?>
+											<h3><a href="product_details.php?id=<?php echo $row['id_product'] ?>" name="details"><?php echo $row['title'] ?></a></h3>
+											<span><?php echo $row['Price'] ?></span>
+										</div>
+									</div>
+								</form>
                             </div>
 							<?php
 										

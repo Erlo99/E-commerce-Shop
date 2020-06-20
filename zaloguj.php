@@ -18,6 +18,7 @@
 		$login = $_POST['email'];
 		$password = $_POST['password'];
 		
+		
 		$login = htmlentities($login, ENT_QUOTES, "UTF-8");
 		
 	//search in db
@@ -37,18 +38,24 @@
 					$_SESSION['id'] = $row['id_user'];
 					$_SESSION['first'] =  $row['first'];
 					unset($_SESSION['wrong']);
+					$_SESSION['loggedEmail'] = $row['email'];
+					
 					$result->close();
-					header('Location: index.php');
+					
+					 header('Location: index.php');
+					
 				} else {
 					$_SESSION['wrong'] =  '<span style="color:red">Wrong email or password</span>';
-					header('Location: login.php');
+					
+					 header('Location: login.php');
 				}
 			} else {
 				$_SESSION['wrong'] =  '<span style="color:red">Wrong email or password</span>';
-				header('Location: login.php');
+				
+					 header('Location: login.php');
 			}
 		}
-		
+			
 			$connection->close();
 		}
 	} catch (Exception $e){

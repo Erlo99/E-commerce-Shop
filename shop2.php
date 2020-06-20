@@ -1,9 +1,16 @@
 <?php
 	session_start();
 	
-
+	
+	if(isset($_POST['add_cart'])){
 		
+		//$_SESSION['cart_id'] ;
+		 echo $_POST['hidden_price'] ;
+		 echo $_SESSION['id'] ;
+		 $var = "twoja stara";
+		// echo '<script>alert("'.$_POST['hidden_id'].'")</script>';
 
+	}
 	
 	require_once "connect.php";
 	try{
@@ -16,7 +23,7 @@
 			$result = mysqli_query($connection, $sql);
 			if(mysqli_num_rows($result) >0){
 				
-			?>
+?>
 
 
 <!doctype html>
@@ -82,7 +89,16 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                                <?php
+								if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+									echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+										<li> <a href="account.php"><span class="flaticon-user"></span></a></li>
+										<li> <a href="logout.php" style="color:black">Logout</a></li>
+									';
+								} else {
+								echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+								}
+                            ?>
                                 <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>
@@ -138,37 +154,30 @@
                         <div class="row">
 						<?php 
 							while($row = mysqli_fetch_array($result)){ 
-							$_SESSION['id'] = $row['id_product'];
+							
 						?>
 						
                             <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-							
                                 <div class="single-popular-items mb-50 text-center">
+								<form  action="" method="POST">
                                     <div class="popular-img">
-                                        <img src="<?php echo $row['img'] ?>" alt="">
-										
+                                        <img src="<?php echo $row['img']; ?>" alt="">
                                         <div class="img-cap">
-											<span>
-											<form action="cart.php?quantity=1&id=<?php echo $row["id_product"]; ?>" method="post">
-												<input  type="hidden" name="hid" id="hid" value="<?php $row['id_product']; ?>"/>
-												<input type="submit" name="add_cart" value="Add to cart" class="addcart"/>
-											</form>
-											</span>
+											<input type="hidden" name="hidden_id" value="<?php $row['id_product']; ?>"/>
+											<input type="hidden" name="hidden_price" value="<?php $row['Price']; ?>"/>
 											
+                                            <span><input type="submit" name="add_cart" value="Add to cart" class="addcart"/></span>
                                         </div>
                                         
                                     </div>
+									</form>
                                     <div class="popular-caption">
-										<?php if(isset($_SESSION['already_added']) && $_SESSION['already_id'] == $row["id_product"]){
-											echo $_SESSION['already_added'];
-											unset($_SESSION['already_added']);
-										} 
-										?>
-                                        <h3><a href="product_details.php?id=<?php echo $row['id_product'] ?>" name="details"><?php echo $row['title'] ?></a></h3>
-                                        <span><?php echo $row['Price'] ?></span>
+                                        <h3><a href="product_details.php?id=<?php $row['id_product'] ?>" name="details"><?php echo $row['title']; ?></a></h3>
+                                        <span><?php echo $row['Price']; ?>  <?php $row['id_product']; ?></span>
+										
                                     </div>
+									
                                 </div>
-								
                             </div>
 						
 							<?php

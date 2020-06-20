@@ -7,6 +7,8 @@
 		exit();
 	}
 	
+	
+	
 	$id = $_GET['id'];
 	
 	require_once "connect.php";
@@ -124,18 +126,33 @@
                     <h3><?php echo $row['title'] ?></h3>
                     <p><?php echo $row['description'] ?></p>
                     <div class="card_area">
+					<?php if(isset($_SESSION['already_added'])){
+								echo $_SESSION['already_added'];
+							unset($_SESSION['already_added']);
+					}	if(isset($_SESSION['limit'])){
+										echo $_SESSION['limit'];
+										unset($_SESSION['limit']);
+								}
+						if(isset($_SESSION['oos'])){
+										echo $_SESSION['oos'];
+										unset($_SESSION['oos']);
+								}		
+						?>
                         <div class="product_count_area">
                             <p>Quantity</p>
                             <div class="product_count d-inline-block">
+							<form action="cart.php?id=<?php echo $row["id_product"]; ?>" method="post">
                                 <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
-                                <input class="product_count_item input-number" type="text" value="1" min="0" max="10">
+                                <input name="many"  class="product_count_item input-number" type="text" value="1" min="1" max="10">
                                 <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
-                            </div>
+                            
+							</div>
                             <p><?php echo $row['Price'] ?></p>
                         </div>
                     <div class="add_to_cart">
-                        <a href="#" class="btn_3">add to cart</a>
+                        <input type="submit" name="add_cart" class="btn_3" value="add to cart"></a>
                     </div>
+					</form>
                     </div>
                 </div>
                 </div>

@@ -1,3 +1,108 @@
+<?php
+	session_start();
+	if(!(isset($_SESSION["shopping_cart"])) || empty($_SESSION["shopping_cart"])){
+		header('Location: cart.php');
+
+		exit();
+	}
+	//echo $_SESSION['incrementOrder'];
+				
+	echo $_SESSION['shipping']['id'];
+	require_once "connect.php";
+		
+		try{
+			$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
+		if($connection->connect_errno!=0){
+			throw new Exception(mysqli_connect_errno());
+		}
+		else {
+			
+			if((isset($_POST['email']) && isset($_POST['password'])) || (isset($_SESSION['logged']) && $_SESSION['logged']==true)){
+				if(isset($_POST['email']) && isset($_POST['password'])){
+					$login = $_POST['email'];
+					$password = $_POST['password'];
+					$login = htmlentities($login, ENT_QUOTES, "UTF-8");
+				
+			
+			
+		//search in db
+			$sql = sprintf("SELECT * FROM users WHERE email='%s'",
+					mysqli_real_escape_string($connection,$login));
+				} else if (isset($_SESSION['loggedEmail'])){
+					$sql = sprintf("SELECT * FROM users WHERE email='%s'",
+					mysqli_real_escape_string($connection,$_SESSION['loggedEmail']));
+				}
+				
+			$result = @$connection->query($sql);
+			
+			if($result){
+				$many_users = $result->num_rows;
+					if($many_users>0){
+						$row = $result->fetch_assoc();
+						
+						if(isset($password) && password_verify($password, $row['password'])){
+						$_SESSION['logged'] = true;
+						
+						$_SESSION['shipping'] = array(
+							'id' => $row['id_user'],
+							'first' =>$row['first'],
+							'last' => $row['last'],
+							'email' => $row['email'],
+							'country' => $row['country'],
+							'adress1' => $row['adress1'],
+							'adress2' => $row['adress2'],
+							'city' => $row['city'],
+							'district' => $row['district'],
+							'zip' => $row['zip'],
+							'phone' => $row['phone'],
+						);
+						} else {
+							$_SESSION['shipping'] = array(
+							'id' => $row['id_user'],
+							'first' =>$row['first'],
+							'last' => $row['last'],
+							'email' => $row['email'],
+							'country' => $row['country'],
+							'adress1' => $row['adress1'],
+							'adress2' => $row['adress2'],
+							'city' => $row['city'],
+							'district' => $row['district'],
+							'zip' => $row['zip'],
+							'phone' => $row['phone'],
+							);
+						}
+						
+						
+						//echo $_SESSION['shipping'];
+						//echo "wale";
+						
+						unset($_SESSION['wrong']);
+						$_SESSION['first'] = $row['first'];
+						$result->close();
+						//header('Location: ' . $_SERVER['HTTP_REFERER'])
+					} else {
+						$_SESSION['wrong'] =  '<span style="color:red">Wrong email or password</span>';
+						
+					}
+				} else {
+					$_SESSION['wrong'] =  '<span style="color:red">Wrong email or password</span>';
+					
+				}
+			}
+			
+			
+				$connection->close();
+		}
+		} catch (Exception $e){
+			echo 'Server error';
+			echo $e;
+		}
+	
+	
+	
+
+?>
+
 <!doctype html>
 <html lang="zxx">
 <head>
@@ -49,7 +154,16 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                                <?php
+									if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+										echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+											<li> <a href="account.php"><span class="flaticon-user"></span></a></li>
+											<li> <a href="logout.php?action=checkout" style="color:black">Logout</a></li>
+										';
+									} else {
+									echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+									}
+								?>
                                 <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>
@@ -81,198 +195,279 @@
         <!--================Checkout Area =================-->
         <section class="checkout_area section_padding">
           <div class="container">
-            <div class="returning_customer">
-              <div class="check_title">
-                <h2>
-                  Returning Customer?
-                  <a href="#">Click here to login</a>
-                </h2>
-              </div>
-              <p>
-                If you have shopped with us before, please enter your details in the
-                boxes below. If you are a new customer, please proceed to the
-                Billing & Shipping section.
-              </p>
-              <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                <div class="col-md-6 form-group p_star">
-                  <input type="text" class="form-control" id="name" name="name" value=" " />
-                  <span class="placeholder" data-placeholder="Username or Email"></span>
-                </div>
-                <div class="col-md-6 form-group p_star">
-                  <input type="password" class="form-control" id="password" name="password" value="" />
-                  <span class="placeholder" data-placeholder="Password"></span>
-                </div>
-                <div class="col-md-12 form-group">
-                  <button type="submit" value="submit" class="btn_3">
-                    log in
-                  </button>
-                  <div class="creat_account">
-                    <input type="checkbox" id="f-option" name="selector" />
-                    <label for="f-option">Remember me</label>
-                  </div>
-                  <a class="lost_pass" href="#">Lost your password?</a>
-                </div>
-              </form>
-            </div>
-            <div class="cupon_area">
-              <div class="check_title">
-                <h2>
-                  Have a coupon?
-                  <a href="#">Click here to enter your code</a>
-                </h2>
-              </div>
-              <input type="text" placeholder="Enter coupon code" />
-              <a class="tp_btn" href="#">Apply Coupon</a>
-            </div>
+		  
+            
+               <?php if((!isset($_SESSION['logged']))){
+				   
+						echo '<div class="returning_customer">
+							  <p>
+								If you have shopped with us before, please enter your details in the
+								boxes below. If you are a new customer, please proceed to the
+								Billing & Shipping section.
+							  </p>
+							   
+							  <form class="row contact_form" action="checkout.php" method="post" >
+								<div class="col-md-6 form-group p_star">
+								  <input type="text" class="form-control" id="name" name="email" placeholder="Email"/>
+								  <input type="hidden" class="form-control" name="redCheck"/>
+								</div>
+								<div class="col-md-6 form-group p_star">
+								  <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+								  
+								</div>';
+						if(isset($_SESSION['wrong'])) 
+							echo $_SESSION['wrong'];
+											
+								echo '<div class="col-md-12 form-group">
+								  <button type="submit" value="submit" class="btn_3">
+									 log in
+								  </button>
+								</div>
+							  </form>
+							</div>';
+				} ?>
+				
             <div class="billing_details">
+			
               <div class="row">
                 <div class="col-lg-8">
-                  <h3>Billing Details</h3>
-                  <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                  <h3>Shipping Details</h3>
+                  <form class="row contact_form" action="send.php" method="post" novalidate="novalidate">
+				  <input type="hidden" value="<?php echo $_SESSION['shipping']['id'] ?>" name="id">
                     <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="first" name="name" />
-                      <span class="placeholder" data-placeholder="First name"></span>
+						<?php if(isset($_SESSION['shipping']['first']) && $_SESSION['shipping']['first'] != NULL)
+							echo '<input type="text" class="form-control" id="first" name="first" value="'.$_SESSION['shipping']['first'].'"/>';
+						else echo '<input type="text" class="form-control" id="first" name="first" placeholder="First Name"/>';
+						if((!isset($_SESSION['shipping']['first']) || $_SESSION['shipping']['first'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
                     </div>
                     <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="last" name="name" />
-                      <span class="placeholder" data-placeholder="Last name"></span>
+					<?php if(isset($_SESSION['shipping']['last']) && $_SESSION['shipping']['last'] != NULL)
+							echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name" value="'.$_SESSION['shipping']['last'].'"/>';
+						else echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name"/>';
+						if((!isset($_SESSION['shipping']['last']) || $_SESSION['shipping']['last'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
+                      
+                      
                     </div>
                     <div class="col-md-12 form-group">
+					
                       <input type="text" class="form-control" id="company" name="company" placeholder="Company name" />
                     </div>
                     <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="number" name="number" />
-                      <span class="placeholder" data-placeholder="Phone number"></span>
+					<?php if(isset($_SESSION['shipping']['phone']) && $_SESSION['shipping']['phone'] != NULL)
+							echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" value="'.$_SESSION['shipping']['phone'].'"/>';
+						else echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number"/>';
+						if((!isset($_SESSION['shipping']['phone']) || $_SESSION['shipping']['phone'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							if(isset($_SESSION['e_number'])) echo $_SESSION['e_number'];
+							
+						} 
+						?>
+                      
+                      
                     </div>
                     <div class="col-md-6 form-group p_star">
-                      <input type="text" class="form-control" id="email" name="compemailany" />
-                      <span class="placeholder" data-placeholder="Email Address"></span>
+						<?php if(isset($_SESSION['shipping']['email']) && $_SESSION['shipping']['email'] != NULL)
+							echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="'.$_SESSION['shipping']['email'].'"/>';
+						else echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address"/>';
+						if((!isset($_SESSION['shipping']['email']) || $_SESSION['shipping']['email'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							if(isset($_SESSION['e_email'])) echo $_SESSION['e_email'];
+							
+							
+						} 
+						?>
+                      
+                      
                     </div>
                     <div class="col-md-12 form-group p_star">
-                      <select class="country_select">
-                        <option value="1">Country</option>
-                        <option value="2">Country</option>
-                        <option value="4">Country</option>
-                      </select>
+						<?php if(isset($_SESSION['shipping']['country']) && $_SESSION['shipping']['country'] != NULL)
+							echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country" value="'.$_SESSION['shipping']['country'].'"/>';
+						else echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country"/>';
+						if((!isset($_SESSION['shipping']['country']) || $_SESSION['shipping']['country'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
+                      
                     </div>
                     <div class="col-md-12 form-group p_star">
-                      <input type="text" class="form-control" id="add1" name="add1" />
-                      <span class="placeholder" data-placeholder="Address line 01"></span>
+						<?php if(isset($_SESSION['shipping']['adress1']) && $_SESSION['shipping']['adress1'] != NULL)
+							echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01" value="'.$_SESSION['shipping']['adress1'].'"/>';
+						else echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01"/>';
+						if((!isset($_SESSION['shipping']['adress1']) || $_SESSION['shipping']['adress1'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
+                      
+                      
                     </div>
                     <div class="col-md-12 form-group p_star">
-                      <input type="text" class="form-control" id="add2" name="add2" />
-                      <span class="placeholder" data-placeholder="Address line 02"></span>
+						<?php if(isset($_SESSION['shipping']['adress2']) && $_SESSION['shipping']['adress2'] != NULL)
+							echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" value="'.$_SESSION['shipping']['adress2'].'"/>';
+						else echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" />';
+						
+						?>
+                      
+                      
                     </div>
                     <div class="col-md-12 form-group p_star">
-                      <input type="text" class="form-control" id="city" name="city" />
-                      <span class="placeholder" data-placeholder="Town/City"></span>
+						<?php if(isset($_SESSION['shipping']['city']) && $_SESSION['shipping']['city'] != NULL)
+							echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City" value="'.$_SESSION['shipping']['city'].'"/>';
+						else echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City"/>';
+						if((!isset($_SESSION['shipping']['city']) || $_SESSION['shipping']['city'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
+                      
+                      
                     </div>
                     <div class="col-md-12 form-group p_star">
-                      <select class="country_select">
-                        <option value="1">District</option>
-                        <option value="2">District</option>
-                        <option value="4">District</option>
-                      </select>
+					<?php if(isset($_SESSION['shipping']['district']) && $_SESSION['shipping']['district'] != NULL)
+							echo '<input type="text" class="form-control" id="district" name="district" placeholder="District" value="'.$_SESSION['shipping']['district'].'"/>';
+						else echo '<input type="text" class="form-control" id="district" name="district" placeholder="District"/>';
+						if((!isset($_SESSION['shipping']['district']) || $_SESSION['shipping']['district'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
+                      
                     </div>
                     <div class="col-md-12 form-group">
-                      <input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />
+					<?php if(isset($_SESSION['shipping']['zip']) && $_SESSION['shipping']['zip'] != NULL)
+							echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"  value="'.$_SESSION['shipping']['zip'].'"/>';
+						else echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />';
+						if((!isset($_SESSION['shipping']['zip']) || $_SESSION['shipping']['zip'] == '') && isset($_SESSION['bad'])){
+							echo $_SESSION['bad'];
+							
+							
+						} 
+						?>
+                      
                     </div>
-                    <div class="col-md-12 form-group">
-                      <div class="creat_account">
-                        <input type="checkbox" id="f-option2" name="selector" />
-                        <label for="f-option2">Create an account?</label>
-                      </div>
+					<div class="col-md-12 form-group">
+					
+					</div>
+                    <h3>Card Information</h3>
+                    <div class="billing_details" style="margin-left: 10%;">
+						<div class="row">
+							<div class="col-md-12 form-group p_star">
+							<?php if(isset($_SESSION['shipping']['card']) && $_SESSION['shipping']['card'] != NULL)
+								echo '<input type="text" class="form-control" id="card" name="card" placeholder="Card Number" value="'.$_SESSION['shipping']['card'].'"/>';
+							else echo '<input type="text" class="form-control" id="card" name="card" placeholder="Card Number"/>';
+							if((!isset($_SESSION['shipping']['card']) || $_SESSION['shipping']['zip'] == '') && isset($_SESSION['e_card'])){
+								echo $_SESSION['e_card'];
+								
+								
+							} 
+							?>
+							  
+							  
+							</div>
+							<div class="col-md-12 form-group p_star">
+							<?php if(isset($_SESSION['shipping']['cvv']) && $_SESSION['shipping']['cvv'] != NULL)
+								echo '<input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" value="'.$_SESSION['shipping']['cvv'].'"/>';
+							else echo '<input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV"/>';
+							if((!isset($_SESSION['shipping']['cvv']) || $_SESSION['shipping']['cvv'] == '') && isset($_SESSION['e_cvv'])){
+								echo $_SESSION['e_cvv'];
+								
+								
+							} 
+							?>
+							  
+							  
+							</div>
+							<div class="col-md-2 form-group p_star">
+							<?php if(isset($_SESSION['shipping']['month']) && $_SESSION['shipping']['month'] != NULL)
+								echo '<input type="text" class="form-control" id="month" name="month" placeholder="month" value="'.$_SESSION['shipping']['month'].'"/>';
+							else echo '<input type="text" class="form-control" id="month" name="month" placeholder="month"/>';
+							if((!isset($_SESSION['shipping']['month']) || $_SESSION['shipping']['month'] == '') && isset($_SESSION['e_month'])){
+								echo $_SESSION['e_month'];
+								
+								
+							} 
+							?>
+							  
+							</div>
+							<div class="col-md-2 form-group p_star">
+							<?php if(isset($_SESSION['shipping']['year']) && $_SESSION['shipping']['year'] != NULL)
+								echo '<input type="text" class="form-control" id="year" name="year" placeholder="year" value="'.$_SESSION['shipping']['year'].'"/>';
+							else echo '<input type="text" class="form-control" id="year" name="year" placeholder="year"/>';
+							if((!isset($_SESSION['shipping']['year']) || $_SESSION['shipping']['year'] == '') && isset($_SESSION['e_card'])){
+								echo $_SESSION['e_year'];
+								
+								
+							} 
+							?>
+							  
+							</div>
+						</div> 
                     </div>
-                    <div class="col-md-12 form-group">
-                      <div class="creat_account">
-                        <h3>Shipping Details</h3>
-                        <input type="checkbox" id="f-option3" name="selector" />
-                        <label for="f-option3">Ship to a different address?</label>
-                      </div>
-                      <textarea class="form-control" name="message" id="message" rows="1"
-                        placeholder="Order Notes"></textarea>
-                    </div>
-                  </form>
+                  
                 </div>
                 <div class="col-lg-4">
                   <div class="order_box">
                     <h2>Your Order</h2>
+					
                     <ul class="list">
                       <li>
-                        <a href="#">Product
-                          <span>Total</span>
-                        </a>
+                        
+                          <span>Cart</span>
+                        
                       </li>
+					  <?php
+						if(!empty($_SESSION["shopping_cart"])){
+						
+						foreach($_SESSION["shopping_cart"] as $keys => $values)
+						{
+					?>
                       <li>
-                        <a href="#">Fresh Blackberry
-                          <span class="middle">x 02</span>
-                          <span class="last">$720.00</span>
+                        <a ><?php echo $values["title"]; ?>
+                          <span class="middle">x<?php echo $values["quantity"];?></span>
+                          <span class="last">$<?php echo $values["price"]; ?></span>
                         </a>
                       </li>
-                      <li>
-                        <a href="#">Fresh Tomatoes
-                          <span class="middle">x 02</span>
-                          <span class="last">$720.00</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Fresh Brocoli
-                          <span class="middle">x 02</span>
-                          <span class="last">$720.00</span>
-                        </a>
-                      </li>
+                      <?php }
+						}
+					?>
                     </ul>
+					
                     <ul class="list list_2">
+                      
                       <li>
-                        <a href="#">Subtotal
-                          <span>$2160.00</span>
+                        <a>Total
+                          <span><?php	if(isset($_SESSION['total'])) echo $_SESSION['total']; ?></span>
                         </a>
                       </li>
-                      <li>
-                        <a href="#">Shipping
-                          <span>Flat rate: $50.00</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Total
-                          <span>$2210.00</span>
-                        </a>
-                      </li>
+					  
                     </ul>
-                    <div class="payment_item">
-                      <div class="radion_btn">
-                        <input type="radio" id="f-option5" name="selector" />
-                        <label for="f-option5">Check payments</label>
-                        <div class="check"></div>
-                      </div>
-                      <p>
-                        Please send a check to Store Name, Store Street, Store Town,
-                        Store State / County, Store Postcode.
-                      </p>
-                    </div>
-                    <div class="payment_item active">
-                      <div class="radion_btn">
-                        <input type="radio" id="f-option6" name="selector" />
-                        <label for="f-option6">Paypal </label>
-                        <img src="img/product/single-product/card.jpg" alt="" />
-                        <div class="check"></div>
-                      </div>
-                      <p>
-                        Please send a check to Store Name, Store Street, Store Town,
-                        Store State / County, Store Postcode.
-                      </p>
-                    </div>
-                    <div class="creat_account">
-                      <input type="checkbox" id="f-option4" name="selector" />
-                      <label for="f-option4">I’ve read and accept the </label>
-                      <a href="#">terms & conditions*</a>
-                    </div>
-                    <a class="btn_3" href="#">Proceed to Paypal</a>
+                    
+                    
+                    
+                    <button type="submit"  name="submit" class="btn_3">
+									Place Order
+								  </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+		  </form>
         </section>
         <!--================End Checkout Area =================-->
     </main>

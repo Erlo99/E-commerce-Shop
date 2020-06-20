@@ -1,3 +1,151 @@
+<?php
+	session_start();
+	
+	
+	
+	if(isset($_POST['add_cart'])){
+
+
+	
+	require_once "connect.php";
+	
+	try{
+		$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
+	if($connection->connect_errno!=0){
+		throw new Exception(mysqli_connect_errno());
+	}
+	else {
+		$id = $_GET['id'];
+		
+
+	//search in db
+		$sql = sprintf("SELECT * FROM products WHERE id_product='%s'", $id);
+		
+		$result = @$connection->query($sql);
+		
+		if($result){
+			
+
+			$product = $result->num_rows;
+				if($product>0){
+					$row = $result->fetch_assoc();
+					
+					
+						
+					if(isset($_SESSION["shopping_cart"]))
+					{	
+						if(isset($_POST['many'])) $quanti = $_POST['many'];
+						else $quanti = $_GET['quantity'];
+						
+						$count = count($_SESSION["shopping_cart"]);
+						$items = array(
+							"id" => $row['id_product'],
+							"img" => $row['img'], 
+							"title" => $row['title'], 
+							"price" => $row['Price'],
+							"quantity" => $quanti);
+							
+						$_SESSION["shopping_cart"][$count] = $items;
+								
+								
+								if ($_POST['many']>10){
+									$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
+									header('Location: ' . $_SERVER['HTTP_REFERER']);
+									unset($_SESSION["shopping_cart"][$count]);
+									exit();
+								}
+								$oos = $row['Stock']-$quanti;
+								if ($oos<1){
+									$_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
+									header('Location: ' . $_SERVER['HTTP_REFERER']);
+									unset($_SESSION["shopping_cart"][$count]);
+									exit();
+								}
+								
+						for($i=0;$i<$count;$i++){
+							if(reset($_SESSION["shopping_cart"][$i]) == reset($items)){
+								
+								$_SESSION['already_added'] =  '<span style="color:red">Item already added &nbsp;&nbsp;</span>';
+								$_SESSION['already_id'] = $row['id_product'];
+								
+								header('Location: ' . $_SERVER['HTTP_REFERER']);
+								unset($_SESSION["shopping_cart"][$count]);
+								exit();
+								
+							}
+						}
+						$left = $row['Stock'] - $quanti;
+						$query = "UPDATE products 
+								SET Stock='".$left."' 
+								WHERE id_product='".$row['id_product']."'";
+						mysqli_query($connection, $query);
+					}
+					else
+					{	
+					
+						if(isset($_POST['many'])) $quanti = $_POST['many'];
+						else $quanti = $_GET['quantity'];
+						$items = array(
+							"id" => $row['id_product'],
+							"img" => $row['img'], 
+							"title" => $row['title'], 
+							"price" => $row['Price'], 
+							"quantity" => $quanti);
+						$_SESSION["shopping_cart"][0] = $items;
+						if ($_POST['many']>10){
+									$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
+									header('Location: ' . $_SERVER['HTTP_REFERER']);
+									unset($_SESSION["shopping_cart"][0]);
+									exit();
+								}
+								$oos = $row['Stock']-$quanti;
+								if ($oos<1){
+									$_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
+									header('Location: ' . $_SERVER['HTTP_REFERER']);
+									unset($_SESSION["shopping_cart"][0]);
+									exit();
+								}
+						
+						$left = $row['Stock'] - $quanti;
+						$query = "UPDATE products 
+								SET Stock='".$left."' 
+								WHERE id_product='".$row['id_product']."'";
+						mysqli_query($connection, $query);						
+					}
+					
+					$result->close();
+					header('Location: ' . $_SERVER['HTTP_REFERER']);
+				
+			} 
+		}
+		
+			$connection->close();
+		}
+	} catch (Exception $e){
+		echo 'Server error';
+		echo $e;
+	}
+	}
+	if(isset($_GET["delete"]))
+	{
+		foreach($_SESSION["shopping_cart"] as $keys => $values)
+		{
+			if($values["id"] == $_GET["delete"])
+			{
+				unset($_SESSION["shopping_cart"][$keys]);
+				 $_SESSION['total'] = $_SESSION['total'] - $values["price"];
+				//echo '<script>alert("Item Removed")</script>';
+				//echo '<script>window.location="index.php"</script>';
+				//unset($_SESSION["delete"]);
+			}
+		}
+
+	}
+	
+?>
+
+
+
 <!doctype html>
 <html lang="zxx">
 <head>
@@ -92,134 +240,84 @@
                   </tr>
                 </thead>
                 <tbody>
+				<?php
+				if(!empty($_SESSION["shopping_cart"]))
+					{
+						$total = 0;
+						
+						foreach($_SESSION["shopping_cart"] as $keys => $values)
+						{
+					?>
                   <tr>
                     <td>
                       <div class="media">
                         <div class="d-flex">
-                          <img src="assets/img/gallery/card1.png" alt="" />
+                          <img src="<?php echo $values["img"]; ?>" alt="" />
                         </div>
                         <div class="media-body">
-                          <p>Minimalistic shop for multipurpose use</p>
+                          <p><?php echo $values["title"]; ?></p>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <h5>$360.00</h5>
+                      <h5><?php echo $values["price"]; ?></h5>
                     </td>
                     <td>
-                      <div class="product_count">
-                        <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                        <input class="input-number" type="text" value="1" min="0" max="10">
-                        <span class="input-number-increment"> <i class="ti-plus"></i></span>
+                      <div>
+                    
+							<p style="margin-bottom: 0; color: #415094;"><?php echo $values["quantity"];?></p>
+						
+				
+                        
                       </div>
+					  <?php $total += ($values["price"] * $values["quantity"]); ?>
                     </td>
                     <td>
-                      <h5>$720.00</h5>
+                      <h5><?php echo $total; ?></h5>
+                    </td>
+					<td>
+                      <a href="cart.php?delete=<?php echo $values["id"] ?>"  name="delete" style="color:red">Delete &nbsp;</a>
+						
+						<!--</form>-->
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <div class="media">
-                        <div class="d-flex">
-                          <img src="assets/img/gallery/card2.png" alt="" />
-                        </div>
-                        <div class="media-body">
-                          <p>Minimalistic shop for multipurpose use</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <h5>$360.00</h5>
-                    </td>
-                    <td>
-                      <div class="product_count">
-                          <span class="input-number-decrement"> <i class="ti-minus"></i></span>
-                          <input class="input-number" type="text" value="1" min="0" max="10">
-                          <span class="input-number-increment"> <i class="ti-plus"></i></span>
-                      </div>
-                    </td>
-                    <td>
-                      <h5>$720.00</h5>
-                    </td>
-                  </tr>
-                  <tr class="bottom_button">
-                    <td>
-                      <a class="btn_1" href="#">Update Cart</a>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                      <div class="cupon_text float-right">
-                        <a class="btn_1" href="#">Close Coupon</a>
-                      </div>
-                    </td>
-                  </tr>
+				  
+                  <?php
+							 
+							 $_SESSION['total'] = $total;
+						}
+					} else {
+						echo '<span style="color:red">No items added</span>';
+					}
+					?>
+                  
                   <tr>
                     <td></td>
                     <td></td>
                     <td>
                       <h5>Subtotal</h5>
                     </td>
+					
                     <td>
-                      <h5>$2160.00</h5>
+                     <h5><?php  if(isset($_SESSION['total']))
+							echo $_SESSION['total'];
+						 ?></h5>
                     </td>
                   </tr>
-                  <tr class="shipping_area">
-                    <td></td>
-                    <td></td>
-                    <td>
-                      <h5>Shipping</h5>
-                    </td>
-                    <td>
-                      <div class="shipping_box">
-                        <ul class="list">
-                          <li>
-                            Flat Rate: $5.00
-                            <input type="radio" aria-label="Radio button for following text input">
-                          </li>
-                          <li>
-                            Free Shipping
-                            <input type="radio" aria-label="Radio button for following text input">
-                          </li>
-                          <li>
-                            Flat Rate: $10.00
-                            <input type="radio" aria-label="Radio button for following text input">
-                          </li>
-                          <li class="active">
-                            Local Delivery: $2.00
-                            <input type="radio" aria-label="Radio button for following text input">
-                          </li>
-                        </ul>
-                        <h6>
-                          Calculate Shipping
-                          <i class="fa fa-caret-down" aria-hidden="true"></i>
-                        </h6>
-                        <select class="shipping_select">
-                          <option value="1">Bangladesh</option>
-                          <option value="2">India</option>
-                          <option value="4">Pakistan</option>
-                        </select>
-                        <select class="shipping_select section_bg">
-                          <option value="1">Select a State</option>
-                          <option value="2">Select a State</option>
-                          <option value="4">Select a State</option>
-                        </select>
-                        <input class="post_code" type="text" placeholder="Postcode/Zipcode" />
-                        <a class="btn_1" href="#">Update Details</a>
-                      </div>
-                    </td>
-                  </tr>
+                  
                 </tbody>
               </table>
+			  
               <div class="checkout_btn_inner float-right">
-                <a class="btn_1" href="#">Continue Shopping</a>
-                <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
+			  
+                <a class="btn_1" href="shop.php">Continue Shopping</a>
+                <a class="btn_1 checkout_btn_1" href="checkout.php">Proceed to checkout</a>
               </div>
             </div>
           </div>
       </section>
       <!--================End Cart Area =================-->
-  </main>>
+  </main>
   <footer>
       <!-- Footer Start-->
       <div class="footer-area footer-padding">
@@ -311,6 +409,13 @@
   <!-- Jquery Plugins, main Jquery -->	
   <script src="./assets/js/plugins.js"></script>
   <script src="./assets/js/main.js"></script>
+  
+  <script>
+	function changeQuantity() {
+	  var quan = document.getElementByName("many");
+	  console.log(quan);
+	}
+</script>
 
 </body>
 </html>
