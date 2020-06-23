@@ -1,14 +1,10 @@
 <?php
 	session_start();
 	
-	
+	require "connect.php";
 	
 	if(isset($_POST['add_cart'])){
 
-
-	
-	require_once "connect.php";
-	
 	try{
 		$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
 	if($connection->connect_errno!=0){
@@ -43,6 +39,7 @@
 							"img" => $row['img'], 
 							"title" => $row['title'], 
 							"price" => $row['Price'],
+							"stock" => $row['Stock'],
 							"quantity" => $quanti);
 							
 						$_SESSION["shopping_cart"][$count] = $items;
@@ -55,12 +52,15 @@
 									exit();
 								}
 								$oos = $row['Stock']-$quanti;
-								if ($oos<1){
-									$_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
+								if ($oos<0){
+									if($row['Stock'] == 0) $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
+									else $_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
 									header('Location: ' . $_SERVER['HTTP_REFERER']);
 									unset($_SESSION["shopping_cart"][$count]);
 									exit();
 								}
+								
+								
 								
 						for($i=0;$i<$count;$i++){
 							if(reset($_SESSION["shopping_cart"][$i]) == reset($items)){
@@ -89,22 +89,26 @@
 							"id" => $row['id_product'],
 							"img" => $row['img'], 
 							"title" => $row['title'], 
-							"price" => $row['Price'], 
+							"price" => $row['Price'],
+							"stock" => $row['Stock'],							
 							"quantity" => $quanti);
 						$_SESSION["shopping_cart"][0] = $items;
+						$oos = $row['Stock']-$quanti;
 						if ($_POST['many']>10){
 									$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
 									header('Location: ' . $_SERVER['HTTP_REFERER']);
 									unset($_SESSION["shopping_cart"][0]);
 									exit();
 								}
-								$oos = $row['Stock']-$quanti;
-								if ($oos<1){
-									$_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
+						if($oos==0){
+									if($row['Stock'] == 0) $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
+									else $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
 									header('Location: ' . $_SERVER['HTTP_REFERER']);
 									unset($_SESSION["shopping_cart"][0]);
 									exit();
 								}
+						
+								
 						
 						$left = $row['Stock'] - $quanti;
 						$query = "UPDATE products 
@@ -118,6 +122,8 @@
 				
 			} 
 		}
+		
+		
 		
 			$connection->close();
 		}
@@ -134,9 +140,36 @@
 			{
 				unset($_SESSION["shopping_cart"][$keys]);
 				 $_SESSION['total'] = $_SESSION['total'] - $values["price"];
-				//echo '<script>alert("Item Removed")</script>';
-				//echo '<script>window.location="index.php"</script>';
-				//unset($_SESSION["delete"]);
+				 
+				
+				try{
+					$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
+				if($connection->connect_errno!=0){
+					throw new Exception(mysqli_connect_errno());
+				}
+				else {
+
+				//search in db
+					//$sql = sprintf("SELECT Stock FROM products id_product='%s'", $values["id"]);
+					
+					//$result = @$connection->query($sql);
+					//$row = $result->fetch_assoc();
+					//$restore = $values["stock"] + $values["quantity"];
+					$sql = sprintf("UPDATE products 
+									SET Stock ='%s'  WHERE id_product='%s'", $values["stock"], $values["id"] );
+					
+					@$connection->query($sql);
+					
+					
+						
+					$connection->close();
+						}
+					} catch (Exception $e){
+						echo 'Server error';
+						echo $e;
+					}
+					
+				
 			}
 		}
 

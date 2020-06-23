@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if((isset($_SESSION['loggedAdmin'])) && ($_SESSION['loggedAdmin']==true)){
+		header('Location: index.php');
+		exit();
+	}
+?>
+
+
 <!doctype html>
 <html lang="zxx">
 <head>
@@ -10,17 +20,17 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
 
     <!-- CSS here -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="assets/css/flaticon.css">
-        <link rel="stylesheet" href="assets/css/slicknav.css">
-        <link rel="stylesheet" href="assets/css/animate.min.css">
-        <link rel="stylesheet" href="assets/css/magnific-popup.css">
-        <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="assets/css/themify-icons.css">
-        <link rel="stylesheet" href="assets/css/slick.css">
-        <link rel="stylesheet" href="assets/css/nice-select.css">
-        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="../assets/css/flaticon.css">
+        <link rel="stylesheet" href="../assets/css/slicknav.css">
+        <link rel="stylesheet" href="../assets/css/animate.min.css">
+        <link rel="stylesheet" href="../assets/css/magnific-popup.css">
+        <link rel="stylesheet" href="../assets/css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="../assets/css/themify-icons.css">
+        <link rel="stylesheet" href="../assets/css/slick.css">
+        <link rel="stylesheet" href="../assets/css/nice-select.css">
+        <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     
@@ -40,8 +50,8 @@
                                      Sign in </h3>
                                 <form class="row contact_form" action="zalogujAdmin.php" method="post">
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="email" class="form-control" id="name" name="email"
-                                            placeholder="Username">
+                                        <input type="text" class="form-control" id="login" name="login"
+                                            placeholder="Login">
                                     </div>
                                     <div class="col-md-12 form-group p_star">
                                         <input type="password" class="form-control" id="password" name="password"
@@ -49,13 +59,7 @@
                                     </div>
                                     <div class="col-md-12 form-group">
                                         
-										<div class="creat_account d-flex align-items-center">
-                                            <?php 
-											if(isset($_SESSION['wrong'])) 
-												echo $_SESSION['wrong'];
-											
-											?>
-                                        </div>
+										
 										
                                         <button type="submit" value="submit" class="btn_3">
                                             log in

@@ -138,21 +138,22 @@
 										unset($_SESSION['oos']);
 								}		
 						?>
-                        <div class="product_count_area">
-                            <p>Quantity</p>
-                            <div class="product_count d-inline-block">
-							<form action="cart.php?id=<?php echo $row["id_product"]; ?>" method="post">
-                                <span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
-                                <input name="many"  class="product_count_item input-number" type="text" value="1" min="1" max="10">
-                                <span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
-                            
+						<form action="cart.php?id=<?php echo $row["id_product"]; ?>" method="post">
+							<div class="product_count_area">
+								<p>Quantity</p>
+								<div class="product_count d-inline-block">
+								
+									<span class="product_count_item inumber-decrement"> <i class="ti-minus"></i></span>
+									<input name="many"  class="product_count_item input-number" type="text" value="1" min="1" max="10">
+									<span class="product_count_item number-increment"> <i class="ti-plus"></i></span>
+								
+								</div>
+								<p><?php echo $row['Price'] ?></p>
 							</div>
-                            <p><?php echo $row['Price'] ?></p>
-                        </div>
-                    <div class="add_to_cart">
-                        <input type="submit" name="add_cart" class="btn_3" value="add to cart"></a>
-                    </div>
-					</form>
+							<div class="add_to_cart">
+								<input type="submit" name="add_cart" class="btn_3" value="add to cart"></a>
+							</div>
+						</form>
                     </div>
                 </div>
                 </div>
