@@ -69,7 +69,6 @@
 							<?php
 								if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
 									echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
-										<li> <a href="account.php"><span class="flaticon-user"></span></a></li>
 										<li> <a href="logout.php" style="color:black">Logout</a></li>
 									';
 								} else {
@@ -166,13 +165,13 @@
                 </div>
                 <div class="row">
 				<?php 		
-							$i = 0;
-							while($row = mysqli_fetch_array($result)){ 
+					$i = 0;
+						while($row = mysqli_fetch_array($result)){ 
 							
-								$i++;
-								if($i >6) break; 
+							$i++;
+							if($i >6) break; 
 							
-						?>
+				?>
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
 								<form action="cart.php?quantity=1&id=<?php echo $row["id_product"]; ?>" method="post">
 									<div class="single-popular-items mb-50 text-center">
@@ -187,10 +186,10 @@
 											
 										</div>
 										<div class="popular-caption">
-										<?php if(isset($_SESSION['already_added']) && $_SESSION['already_id'] == $row["id_product"]){
-											echo $_SESSION['already_added'];
-											unset($_SESSION['already_added']);
-										}
+										<?php 	if(isset($_SESSION['already_added']) && $_SESSION['already_id'] == $row["id_product"]){
+													echo $_SESSION['already_added'];
+													unset($_SESSION['already_added']);
+												}
 										?>
 											<h3><a href="product_details.php?id=<?php echo $row['id_product'] ?>" name="details"><?php echo $row['title'] ?></a></h3>
 											<span><?php echo $row['Price'] ?></span>
@@ -198,22 +197,18 @@
 									</div>
 								</form>
                             </div>
-							<?php
-										
-									
-											}
+				<?php			
+						}
 											
-										}
-										$connection->close();
-									}
+					}
+					$connection->close();
+				}
 									
-								} catch (Exception $e){
-									echo 'Server error';
-									echo $e;
-								}
-								
-								
-							?>
+				} catch (Exception $e){
+					echo 'Server error';
+					echo $e;
+				}	
+				?>
                     
                         
                     </div>

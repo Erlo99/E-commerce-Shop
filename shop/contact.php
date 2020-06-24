@@ -1,9 +1,14 @@
+<?php
+
+	session_start();
+?>
+
 <!doctype html>
 <html class="no-js" lang="zxx">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Watch shop | eCommers</title>
+    <title>Contact</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
@@ -60,7 +65,15 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                                <?php
+									if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+										echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+											<li> <a href="logout.php" style="color:black">Logout</a></li>
+										';
+									} else {
+									echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+									}
+								?>
                                 <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>

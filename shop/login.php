@@ -1,30 +1,27 @@
 <?php
 	session_start();
 	
-
-		
-
-	
 	require_once "connect.php";
-	try{
-		$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
-		if($connection->connect_errno!=0){
-			throw new Exception(mysqli_connect_errno());
-		}
-		else {
-			$sql = "SELECT * FROM products";
-			$result = mysqli_query($connection, $sql);
-			if(mysqli_num_rows($result) >0){
-				
-			?>
+	
+	if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+		header('Location: index.php');
+		exit();
+	}
+	if((isset($_SESSION['successful'])) && ($_SESSION['successful']==true)){
+		$_SESSION['registered'] = "Your Account has been created ! <br>";
+		
+	}
+	
+	
 
+?>
 
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html lang="zxx">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Watch shop | eCommers</title>
+    <title>Login</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
@@ -42,22 +39,8 @@
         <link rel="stylesheet" href="assets/css/slick.css">
         <link rel="stylesheet" href="assets/css/nice-select.css">
         <link rel="stylesheet" href="assets/css/style.css">
-		<link rel="stylesheet" href="assets/css/ownstyle.css">
 </head>
-
 <body>
-    <!--? Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="assets/img/logo/logo.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Preloader Start -->
     <header>
         <!-- Header Start -->
         <div class="header-area">
@@ -82,7 +65,15 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                                <?php
+									if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+										echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+											<li> <a href="logout.php" style="color:black">Logout</a></li>
+										';
+									} else {
+									echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+									}
+								?>
                                 <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>
@@ -104,7 +95,7 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="hero-cap text-center">
-                                <h2>Watch Shop</h2>
+                                <h2>Login</h2>
                             </div>
                         </div>
                     </div>
@@ -112,120 +103,63 @@
             </div>
         </div>
         <!-- Hero Area End-->
-        <!-- Latest Products Start -->
-        <section class="popular-items latest-padding">
+        <!--================login_part Area =================-->
+        <section class="login_part section_padding ">
             <div class="container">
-                <div class="row product-btn justify-content-between mb-40">
-                    <div class="properties__button">
-                        <!--Nav Button  -->
-                        <nav>                                                      
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"  role="tab" aria-controls="nav-home" aria-selected="true">Newest Arrivals</a>
-                              
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="login_part_text text-center">
+                            <div class="login_part_text_iner">
+                                <h2>New to our Shop?</h2>
+                                <p>There are advances being made in science and technology
+                                    everyday, and a good example of this is the</p>
+                                <a href="register.php" class="btn_3">Create an Account</a>
                             </div>
-                        </nav>
-                        <!--End Nav Button  -->
+                        </div>
                     </div>
-                    <!-- Grid and List view -->
-                    <div class="grid-list-view">
-                    </div>
-                    
-                </div>
-                <!-- Nav Card -->
-                <div class="tab-content" id="nav-tabContent">
-                    <!-- card one -->
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row">
-						<?php 
-							while($row = mysqli_fetch_array($result)){ 
-							$_SESSION['id'] = $row['id_product'];
-						?>
-						
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-							
-                                <div class="single-popular-items mb-50 text-center">
-                                    <div class="popular-img">
-                                        <img src="<?php echo $row['img'] ?>" alt="">
-										
-                                        <div class="img-cap">
-											<span>
-											<form action="cart.php?quantity=1&id=<?php echo $row["id_product"]; ?>" method="post">
-												<input  type="hidden" name="hid" id="hid" value="<?php $row['id_product']; ?>"/>
-												<input type="submit" name="add_cart" value="Add to cart" class="addcart"/>
-											</form>
-											</span>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="login_part_form">
+                            <div class="login_part_form_iner">
+							<h3>
+							<?php
+									if(isset($_SESSION['successful']))
+										echo $_SESSION['registered'];
+									else echo "Welcome Back ! <br>";
+									?>
+                                
+                                    Please Sign in now</h3>
+                                <form class="row contact_form" action="zaloguj.php" method="post">
+                                    <div class="col-md-12 form-group p_star">
+                                        <input type="email" class="form-control" id="name" name="email"
+                                            placeholder="Username">
+                                    </div>
+                                    <div class="col-md-12 form-group p_star">
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            placeholder="Password">
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        
+										<div class="creat_account d-flex align-items-center">
+                                            <?php 
+											if(isset($_SESSION['wrong'])) 
+												echo $_SESSION['wrong'];
 											
+											?>
                                         </div>
+										
+                                        <button type="submit" value="submit" class="btn_3">
+                                            log in
+                                        </button>
                                         
                                     </div>
-                                    <div class="popular-caption">
-										<?php if(isset($_SESSION['already_added']) && $_SESSION['already_id'] == $row["id_product"]){
-											echo $_SESSION['already_added'];
-											unset($_SESSION['already_added']);
-										} 
-										?>
-                                        <h3><a href="product_details.php?id=<?php echo $row['id_product'] ?>" name="details"><?php echo $row['title'] ?></a></h3>
-                                        <span><?php echo $row['Price'] ?></span>
-                                    </div>
-                                </div>
-								
+                                </form>
                             </div>
-						
-							<?php
-										
-									
-											}
-											
-										}
-										$connection->close();
-									}
-									
-								} catch (Exception $e){
-									echo 'Server error';
-									echo $e;
-								}
-								
-								
-							?>
                         </div>
                     </div>
                 </div>
-                <!-- End Nav Card -->
             </div>
-			
         </section>
-        <!-- Latest Products End -->
-        <!--? Shop Method Start-->
-        <div class="shop-method-area">
-            <div class="container">
-                <div class="method-wrapper">
-                    <div class="row d-flex justify-content-between">
-                        <div class="col-xl-4 col-lg-4 col-md-6">
-                            <div class="single-method mb-40">
-                                <i class="ti-package"></i>
-                                <h6>Free Shipping Method</h6>
-                                <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-lg-4 col-md-6">
-                            <div class="single-method mb-40">
-                                <i class="ti-unlock"></i>
-                                <h6>Secure Payment System</h6>
-                                <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
-                            </div>
-                        </div> 
-                        <div class="col-xl-4 col-lg-4 col-md-6">
-                            <div class="single-method mb-40">
-                                <i class="ti-reload"></i>
-                                <h6>Secure Payment System</h6>
-                                <p>aorem ixpsacdolor sit ameasecur adipisicing elitsf edasd.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Shop Method End-->
+        <!--================login_part end =================-->
     </main>
     <footer>
         <!-- Footer Start-->
@@ -254,7 +188,7 @@
                         <div class="footer-copy-right">
                             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
   Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                 
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>               
                         </div>
                     </div>
                     <div class="col-xl-5 col-lg-4 col-md-5">
@@ -283,9 +217,9 @@
         </div>
     </div>
     <!-- Search model end -->
+    
+    <!-- JS here -->
 
-<!-- JS here -->
-    <!-- All JS Custom Plugins Link Here here -->
     <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- Jquery, Popper, Bootstrap -->
     <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
@@ -301,13 +235,13 @@
     <!-- One Page, Animated-HeadLin -->
     <script src="./assets/js/wow.min.js"></script>
     <script src="./assets/js/animated.headline.js"></script>
-    <script src="./assets/js/jquery.magnific-popup.js"></script>
-
+    
     <!-- Scroll up, nice-select, sticky -->
     <script src="./assets/js/jquery.scrollUp.min.js"></script>
     <script src="./assets/js/jquery.nice-select.min.js"></script>
     <script src="./assets/js/jquery.sticky.js"></script>
-    
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+
     <!-- contact js -->
     <script src="./assets/js/contact.js"></script>
     <script src="./assets/js/jquery.form.js"></script>
@@ -318,6 +252,7 @@
     <!-- Jquery Plugins, main Jquery -->	
     <script src="./assets/js/plugins.js"></script>
     <script src="./assets/js/main.js"></script>
-    
+
 </body>
+    
 </html>

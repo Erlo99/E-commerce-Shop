@@ -5,132 +5,132 @@
 	
 	if(isset($_POST['add_cart'])){
 
-	try{
-		$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
-	if($connection->connect_errno!=0){
-		throw new Exception(mysqli_connect_errno());
-	}
-	else {
-		$id = $_GET['id'];
-		
-
-	//search in db
-		$sql = sprintf("SELECT * FROM products WHERE id_product='%s'", $id);
-		
-		$result = @$connection->query($sql);
-		
-		if($result){
+		try{
+			$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
+		if($connection->connect_errno!=0){
+			throw new Exception(mysqli_connect_errno());
+		}
+		else {
+			$id = $_GET['id'];
 			
 
-			$product = $result->num_rows;
-				if($product>0){
-					$row = $result->fetch_assoc();
-					
-					
-						
-					if(isset($_SESSION["shopping_cart"]))
-					{	
-						if(isset($_POST['many'])) $quanti = $_POST['many'];
-						else $quanti = $_GET['quantity'];
-						
-						$count = count($_SESSION["shopping_cart"]);
-						$items = array(
-							"id" => $row['id_product'],
-							"img" => $row['img'], 
-							"title" => $row['title'], 
-							"price" => $row['Price'],
-							"stock" => $row['Stock'],
-							"quantity" => $quanti);
-							
-						$_SESSION["shopping_cart"][$count] = $items;
-								
-								
-								if ($_POST['many']>10){
-									$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
-									header('Location: ' . $_SERVER['HTTP_REFERER']);
-									unset($_SESSION["shopping_cart"][$count]);
-									exit();
-								}
-								$oos = $row['Stock']-$quanti;
-								if ($oos<0){
-									if($row['Stock'] == 0) $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
-									else $_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
-									header('Location: ' . $_SERVER['HTTP_REFERER']);
-									unset($_SESSION["shopping_cart"][$count]);
-									exit();
-								}
-								
-								
-								
-						for($i=0;$i<$count;$i++){
-							if(reset($_SESSION["shopping_cart"][$i]) == reset($items)){
-								
-								$_SESSION['already_added'] =  '<span style="color:red">Item already added &nbsp;&nbsp;</span>';
-								$_SESSION['already_id'] = $row['id_product'];
-								
-								header('Location: ' . $_SERVER['HTTP_REFERER']);
-								unset($_SESSION["shopping_cart"][$count]);
-								exit();
-								
-							}
-						}
-						$left = $row['Stock'] - $quanti;
-						$query = "UPDATE products 
-								SET Stock='".$left."' 
-								WHERE id_product='".$row['id_product']."'";
-						mysqli_query($connection, $query);
-					}
-					else
-					{	
-					
-						if(isset($_POST['many'])) $quanti = $_POST['many'];
-						else $quanti = $_GET['quantity'];
-						$items = array(
-							"id" => $row['id_product'],
-							"img" => $row['img'], 
-							"title" => $row['title'], 
-							"price" => $row['Price'],
-							"stock" => $row['Stock'],							
-							"quantity" => $quanti);
-						$_SESSION["shopping_cart"][0] = $items;
-						$oos = $row['Stock']-$quanti;
-						if ($_POST['many']>10){
-									$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
-									header('Location: ' . $_SERVER['HTTP_REFERER']);
-									unset($_SESSION["shopping_cart"][0]);
-									exit();
-								}
-						if($oos==0){
-									if($row['Stock'] == 0) $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
-									else $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
-									header('Location: ' . $_SERVER['HTTP_REFERER']);
-									unset($_SESSION["shopping_cart"][0]);
-									exit();
-								}
-						
-								
-						
-						$left = $row['Stock'] - $quanti;
-						$query = "UPDATE products 
-								SET Stock='".$left."' 
-								WHERE id_product='".$row['id_product']."'";
-						mysqli_query($connection, $query);						
-					}
-					
-					$result->close();
-					header('Location: ' . $_SERVER['HTTP_REFERER']);
+		//search in db
+			$sql = sprintf("SELECT * FROM products WHERE id_product='%s'", $id);
+			
+			$result = @$connection->query($sql);
+			
+			if($result){
 				
-			} 
+
+				$product = $result->num_rows;
+					if($product>0){
+						$row = $result->fetch_assoc();
+						
+						
+							
+						if(isset($_SESSION["shopping_cart"]))
+						{	
+							if(isset($_POST['many'])) $quanti = $_POST['many'];
+							else $quanti = $_GET['quantity'];
+							
+							$count = count($_SESSION["shopping_cart"]);
+							$items = array(
+								"id" => $row['id_product'],
+								"img" => $row['img'], 
+								"title" => $row['title'], 
+								"price" => $row['Price'],
+								"stock" => $row['Stock'],
+								"quantity" => $quanti);
+								
+							$_SESSION["shopping_cart"][$count] = $items;
+									
+									
+									if ($_POST['many']>10){
+										$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
+										header('Location: ' . $_SERVER['HTTP_REFERER']);
+										unset($_SESSION["shopping_cart"][$count]);
+										exit();
+									}
+									$oos = $row['Stock']-$quanti;
+									if ($oos<0){
+										if($row['Stock'] == 0) $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
+										else $_SESSION['oos'] = '<span style="color:red">Only '.$row['Stock'].' left in stock</span>';
+										header('Location: ' . $_SERVER['HTTP_REFERER']);
+										unset($_SESSION["shopping_cart"][$count]);
+										exit();
+									}
+									
+									
+									
+							for($i=0;$i<$count;$i++){
+								if(reset($_SESSION["shopping_cart"][$i]) == reset($items)){
+									
+									$_SESSION['already_added'] =  '<span style="color:red">Item already added &nbsp;&nbsp;</span>';
+									$_SESSION['already_id'] = $row['id_product'];
+									
+									header('Location: ' . $_SERVER['HTTP_REFERER']);
+									unset($_SESSION["shopping_cart"][$count]);
+									exit();
+									
+								}
+							}
+							$left = $row['Stock'] - $quanti;
+							$query = "UPDATE products 
+									SET Stock='".$left."' 
+									WHERE id_product='".$row['id_product']."'";
+							mysqli_query($connection, $query);
+						}
+						else
+						{	
+						
+							if(isset($_POST['many'])) $quanti = $_POST['many'];
+							else $quanti = $_GET['quantity'];
+							$items = array(
+								"id" => $row['id_product'],
+								"img" => $row['img'], 
+								"title" => $row['title'], 
+								"price" => $row['Price'],
+								"stock" => $row['Stock'],							
+								"quantity" => $quanti);
+							$_SESSION["shopping_cart"][0] = $items;
+							$oos = $row['Stock']-$quanti;
+							if ($_POST['many']>10){
+										$_SESSION['limit'] = '<span style="color:red">limit 10</span>';
+										header('Location: ' . $_SERVER['HTTP_REFERER']);
+										unset($_SESSION["shopping_cart"][0]);
+										exit();
+									}
+							if($oos==0){
+										if($row['Stock'] == 0) $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
+										else $_SESSION['oos'] = '<span style="color:red">Out Of Stock</span>';
+										header('Location: ' . $_SERVER['HTTP_REFERER']);
+										unset($_SESSION["shopping_cart"][0]);
+										exit();
+									}
+							
+									
+							
+							$left = $row['Stock'] - $quanti;
+							$query = "UPDATE products 
+									SET Stock='".$left."' 
+									WHERE id_product='".$row['id_product']."'";
+							mysqli_query($connection, $query);						
+						}
+						
+						$result->close();
+						header('Location: ' . $_SERVER['HTTP_REFERER']);
+					
+				} 
+			}
+			
+			
+			
+				$connection->close();
+			}
+		} catch (Exception $e){
+			echo 'Server error';
+			echo $e;
 		}
-		
-		
-		
-			$connection->close();
-		}
-	} catch (Exception $e){
-		echo 'Server error';
-		echo $e;
-	}
 	}
 	if(isset($_GET["delete"]))
 	{
@@ -144,30 +144,23 @@
 				
 				try{
 					$connection = @new mysqli($host, $db_user, $db_password, $db_name, $port);
-				if($connection->connect_errno!=0){
-					throw new Exception(mysqli_connect_errno());
-				}
-				else {
+					if($connection->connect_errno!=0){
+						throw new Exception(mysqli_connect_errno());
+					}
+					else {
 
-				//search in db
-					//$sql = sprintf("SELECT Stock FROM products id_product='%s'", $values["id"]);
-					
-					//$result = @$connection->query($sql);
-					//$row = $result->fetch_assoc();
-					//$restore = $values["stock"] + $values["quantity"];
-					$sql = sprintf("UPDATE products 
-									SET Stock ='%s'  WHERE id_product='%s'", $values["stock"], $values["id"] );
-					
-					@$connection->query($sql);
-					
-					
+						$sql = sprintf("UPDATE products 
+										SET Stock ='%s'  
+										WHERE id_product='%s'", $values["stock"], $values["id"]);
 						
+						@$connection->query($sql);
+						
+					}
 					$connection->close();
-						}
-					} catch (Exception $e){
+				} catch (Exception $e){
 						echo 'Server error';
 						echo $e;
-					}
+				}
 					
 				
 			}
@@ -184,7 +177,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Watch shop | eCommers</title>
+  <title>Cart</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="site.webmanifest">
@@ -229,7 +222,15 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                            <?php
+								if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+									echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+										<li> <a href="logout.php" style="color:black">Logout</a></li>
+									';
+								} else {
+								echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+								}
+                            ?>
                                 <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>
@@ -332,8 +333,9 @@
                     </td>
 					
                     <td>
-                     <h5><?php  if(isset($_SESSION['total']))
-							echo $_SESSION['total'];
+                     <h5><?php  
+								if(isset($_SESSION['total']))
+									echo $_SESSION['total'];
 						 ?></h5>
                     </td>
                   </tr>

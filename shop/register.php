@@ -1,9 +1,18 @@
 <?php
 	
 	session_start();
+	
+	
+	if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+		header('Location: index.php');
+		exit();
+	}
 	session_unset();
 	
-	
+	if((isset($_SESSION['successful'])) && ($_SESSION['successful']==true)){
+		$_SESSION['registered'] = "Your Account has been created ! <br>";
+		
+	}
 	
 	if(isset($_POST['email'])){
 		$all_good = true;
@@ -153,7 +162,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Watch shop | eCommers</title>
+    <title>Register</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
@@ -198,7 +207,15 @@
                         <!-- Header Right -->
                         <div class="header-right">
                             <ul>
-                                <li> <a href="login.php"><span class="flaticon-user"></span></a></li>
+                                <?php
+									if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
+										echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
+											<li> <a href="logout.php" style="color:black">Logout</a></li>
+										';
+									} else {
+									echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
+									}
+								?>
                                 <li><a href="cart.php"><span class="flaticon-shopping-cart"></span></a> </li>
                             </ul>
                         </div>
@@ -240,44 +257,44 @@
 							  <form class="row contact_form" action="#" method="post">
 								<div class="col-md-6 form-group ">
 								  <input type="text" class="form-control p_star" id="first" name="first" placeholder="First name"/>
-								  <?php
-									if(isset($_SESSION['e_first']))
-										echo $_SESSION['e_first'];
-								  ?>
+									<?php
+										if(isset($_SESSION['e_first']))
+											echo $_SESSION['e_first'];
+									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
 								  <input type="text" class="form-control" id="last" name="last" placeholder="Last name"/>
 									<?php
-									if(isset($_SESSION['e_last']))
-										echo $_SESSION['e_last'];
+										if(isset($_SESSION['e_last']))
+											echo $_SESSION['e_last'];
 									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
 								  <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
 									<?php
-									if(isset($_SESSION['e_password']))
-										echo $_SESSION['e_password'];
+										if(isset($_SESSION['e_password']))
+											echo $_SESSION['e_password'];
 									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
 								  <input type="password" class="form-control" id="password" name="passwordc" placeholder="Confirm Password" />
-								  <?php
-									if(isset($_SESSION['e_passwordc']))
-										echo $_SESSION['e_passwordc'];
+									<?php
+										if(isset($_SESSION['e_passwordc']))
+											echo $_SESSION['e_passwordc'];
 									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
 								  <input type="text" class="form-control" id="number" name="number" placeholder="Phone number"/>
 									<?php
 										if(isset($_SESSION['e_number']))
-										echo $_SESSION['e_number'];
+											echo $_SESSION['e_number'];
 									?>
 								</div>
 								<div class="col-md-6 form-group p_star">
 								  <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" />
 									<?php
-									if(isset($_SESSION['e_email']))
-										echo $_SESSION['e_email'];
+										if(isset($_SESSION['e_email']))
+											echo $_SESSION['e_email'];
 									?>
 								</div>
 								<h3>Biling Details(not mandatory)</h3>
@@ -307,17 +324,17 @@
 								<div class="col-md-12 form-group">
 									<div class="g-recaptcha" data-sitekey="6Lf88KIZAAAAAOGJe6oELv9CZES-1DgVuRGkANhP"></div>
 									<?php
-									if(isset($_SESSION['e_bot']))
-										echo $_SESSION['e_bot'];
+										if(isset($_SESSION['e_bot']))
+											echo $_SESSION['e_bot'];
 									?>
 								</div>
 								<div class="col-md-12 form-group">
 								<label>
 								  <input type="checkbox" name="terms"/>  I accept the terms and conditions
 								  </label>
-								  <?php
-									if(isset($_SESSION['e_terms']))
-										echo $_SESSION['e_terms'];
+									<?php
+										if(isset($_SESSION['e_terms']))
+											echo $_SESSION['e_terms'];
 									?>
 								</div>
 								<div class="col-md-12 form-group">

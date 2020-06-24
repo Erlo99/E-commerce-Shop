@@ -9,9 +9,7 @@ session_start();
 		exit();
 	}
 	
-	//if(isset($_POST['submit'])){
-	//   $_SESSION['incrementOrder'] += 1;
-	//}
+	
 	
 	//check phone
 		if(strlen($_POST['phone'])!=9){
@@ -127,7 +125,7 @@ session_start();
 		if($_POST['company'] == '') $j--;
 		if($_POST['id'] == '') $j--;
 		echo $j;
-		if($j < 1) {
+		if($j == 0) {
 			unset($_SESSION['bad']);
 			     
 			try{

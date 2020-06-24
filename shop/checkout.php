@@ -1,13 +1,11 @@
 <?php
 	session_start();
 	if(!(isset($_SESSION["shopping_cart"])) || empty($_SESSION["shopping_cart"])){
-		header('Location: cart.php');
+		//header('Location: cart.php');
 
 		exit();
 	}
-	//echo $_SESSION['incrementOrder'];
-				
-	//echo $_SESSION['shipping']['id'];
+	
 	require_once "connect.php";
 		
 		try{
@@ -73,8 +71,7 @@
 						}
 						
 						
-						//echo $_SESSION['shipping'];
-						//echo "wale";
+						
 						
 						unset($_SESSION['wrong']);
 						$_SESSION['first'] = $row['first'];
@@ -108,7 +105,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Watch shop | eCommers</title>
+    <title>Checkout</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
@@ -157,9 +154,8 @@
                                 <?php
 									if((isset($_SESSION['logged'])) && ($_SESSION['logged']==true)){
 										echo '<li>  <p>Welcome '.$_SESSION['first'].' </p></li>
-											<li> <a href="account.php"><span class="flaticon-user"></span></a></li>
-											<li> <a href="logout.php?action=checkout" style="color:black">Logout</a></li>
-										';
+											
+											<li> <a href="logout.php?action=checkout" style="color:black">Logout</a></li>';
 									} else {
 									echo '<li> <a href="login.php"><span class="flaticon-user"></span></a></li>';
 									}
@@ -197,8 +193,8 @@
           <div class="container">
 		  
             
-               <?php if((!isset($_SESSION['logged']))){
-				   
+               <?php 
+					if((!isset($_SESSION['logged']))){
 						echo '<div class="returning_customer">
 							  <p>
 								If you have shopped with us before, please enter your details in the
@@ -225,7 +221,8 @@
 								</div>
 							  </form>
 							</div>';
-				} ?>
+					} 
+				?>
 				
             <div class="billing_details">
 			
@@ -236,31 +233,26 @@
 				  <input type="hidden" value="<?php echo $_SESSION['shipping']['id'] ?>" name="id">
                     <div class="col-md-6 form-group p_star">
 						<?php 
-						if(isset($_SESSION['shopped']['first']) && $_SESSION['shopped']['first'] != NULL)
-							echo '<input type="text" class="form-control" id="first" name="first" value="'.$_SESSION['shopped']['first'].'"/>';
-						else if(isset($_SESSION['shipping']['first']) && $_SESSION['shipping']['first'] != NULL)
-							echo '<input type="text" class="form-control" id="first" name="first" value="'.$_SESSION['shipping']['first'].'"/>';
-						else echo '<input type="text" class="form-control" id="first" name="first" placeholder="First Name"/>';
-						if((!isset($_SESSION['shopped']['first']) || $_SESSION['shopped']['first'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							
-							
-						} 
-						
+							if(isset($_SESSION['shopped']['first']) && $_SESSION['shopped']['first'] != NULL)
+								echo '<input type="text" class="form-control" id="first" name="first" value="'.$_SESSION['shopped']['first'].'"/>';
+							else if(isset($_SESSION['shipping']['first']) && $_SESSION['shipping']['first'] != NULL)
+								echo '<input type="text" class="form-control" id="first" name="first" value="'.$_SESSION['shipping']['first'].'"/>';
+							else echo '<input type="text" class="form-control" id="first" name="first" placeholder="First Name"/>';
+							if((!isset($_SESSION['shopped']['first']) || $_SESSION['shopped']['first'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                     </div>
                     <div class="col-md-6 form-group p_star">
-					<?php 
-						if(isset($_SESSION['shopped']['last']) && $_SESSION['shopped']['last'] != NULL)
-							echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name" value="'.$_SESSION['shopped']['last'].'"/>';
-						else if(isset($_SESSION['shipping']['last']) && $_SESSION['shipping']['last'] != NULL)
-							echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name" value="'.$_SESSION['shipping']['last'].'"/>';
-						else echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name"/>';
-						if((!isset($_SESSION['shopped']['last']) || $_SESSION['shopped']['last'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							
-							
-						} 
+						<?php 
+							if(isset($_SESSION['shopped']['last']) && $_SESSION['shopped']['last'] != NULL)
+								echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name" value="'.$_SESSION['shopped']['last'].'"/>';
+							else if(isset($_SESSION['shipping']['last']) && $_SESSION['shipping']['last'] != NULL)
+								echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name" value="'.$_SESSION['shipping']['last'].'"/>';
+							else echo '<input type="text" class="form-control" id="last" name="last" placeholder="Last name"/>';
+							if((!isset($_SESSION['shopped']['last']) || $_SESSION['shopped']['last'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                       
                       
@@ -270,76 +262,69 @@
                       <input type="text" class="form-control" id="company" name="company" placeholder="Company name" />
                     </div>
                     <div class="col-md-6 form-group p_star">
-					<?php 
-						if(isset($_SESSION['shopped']['phone']) && $_SESSION['shopped']['phone'] != NULL)
-							echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" value="'.$_SESSION['shopped']['phone'].'"/>';
-						else if(isset($_SESSION['shipping']['phone']) && $_SESSION['shipping']['phone'] != NULL)
-							echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" value="'.$_SESSION['shipping']['phone'].'"/>';
-						else echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number"/>';
-						if((!isset($_SESSION['shopped']['phone']) || $_SESSION['shopped']['phone'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							if(isset($_SESSION['e_number'])) echo $_SESSION['e_number'];
-							
-						} 
+						<?php 
+							if(isset($_SESSION['shopped']['phone']) && $_SESSION['shopped']['phone'] != NULL)
+								echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" value="'.$_SESSION['shopped']['phone'].'"/>';
+							else if(isset($_SESSION['shipping']['phone']) && $_SESSION['shipping']['phone'] != NULL)
+								echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" value="'.$_SESSION['shipping']['phone'].'"/>';
+							else echo '<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number"/>';
+							if((!isset($_SESSION['shopped']['phone']) || $_SESSION['shopped']['phone'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+								if(isset($_SESSION['e_number'])) echo $_SESSION['e_number'];
+							} 
 						?>
                       
                       
                     </div>
                     <div class="col-md-6 form-group p_star">
 						<?php 
-						if(isset($_SESSION['shopped']['email']) && $_SESSION['shopped']['email'] != NULL)
-							echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="'.$_SESSION['shopped']['email'].'"/>';
-						else if(isset($_SESSION['shipping']['email']) && $_SESSION['shipping']['email'] != NULL)
-							echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="'.$_SESSION['shipping']['email'].'"/>';
-						else echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address"/>';
-						if((!isset($_SESSION['shopped']['email']) || $_SESSION['shopped']['email'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							if(isset($_SESSION['e_email'])) echo $_SESSION['e_email'];
-							
-							
-						} 
+							if(isset($_SESSION['shopped']['email']) && $_SESSION['shopped']['email'] != NULL)
+								echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="'.$_SESSION['shopped']['email'].'"/>';
+							else if(isset($_SESSION['shipping']['email']) && $_SESSION['shipping']['email'] != NULL)
+								echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address" value="'.$_SESSION['shipping']['email'].'"/>';
+							else echo '<input type="text" class="form-control" id="email" name="email" placeholder="Email Address"/>';
+							if((!isset($_SESSION['shopped']['email']) || $_SESSION['shopped']['email'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+								if(isset($_SESSION['e_email'])) echo $_SESSION['e_email'];
+							} 
 						?>
                       
                       
                     </div>
                     <div class="col-md-12 form-group p_star">
 						<?php 
-						if(isset($_SESSION['shopped']['country']) && $_SESSION['shopped']['country'] != NULL)
-							echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country" value="'.$_SESSION['shopped']['country'].'"/>';
-						else if(isset($_SESSION['shipping']['country']) && $_SESSION['shipping']['country'] != NULL)
-							echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country" value="'.$_SESSION['shipping']['country'].'"/>';
-						else echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country"/>';
-						if((!isset($_SESSION['shopped']['country']) || $_SESSION['shopped']['country'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							
-							
-						} 
+							if(isset($_SESSION['shopped']['country']) && $_SESSION['shopped']['country'] != NULL)
+								echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country" value="'.$_SESSION['shopped']['country'].'"/>';
+							else if(isset($_SESSION['shipping']['country']) && $_SESSION['shipping']['country'] != NULL)
+								echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country" value="'.$_SESSION['shipping']['country'].'"/>';
+							else echo '<input type="text" class="form-control" id="country" name="country" placeholder="Country"/>';
+							if((!isset($_SESSION['shopped']['country']) || $_SESSION['shopped']['country'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                       
                     </div>
                     <div class="col-md-12 form-group p_star">
 						<?php 
-						if(isset($_SESSION['shopped']['adress1']) && $_SESSION['shopped']['adress1'] != NULL)
-							echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01" value="'.$_SESSION['shopped']['adress1'].'"/>';
-						else if(isset($_SESSION['shipping']['adress1']) && $_SESSION['shipping']['adress1'] != NULL)
-							echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01" value="'.$_SESSION['shipping']['adress1'].'"/>';
-						else echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01"/>';
-						if((!isset($_SESSION['shopped']['adress1']) || $_SESSION['shopped']['adress1'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							
-							
-						} 
+							if(isset($_SESSION['shopped']['adress1']) && $_SESSION['shopped']['adress1'] != NULL)
+								echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01" value="'.$_SESSION['shopped']['adress1'].'"/>';
+							else if(isset($_SESSION['shipping']['adress1']) && $_SESSION['shipping']['adress1'] != NULL)
+								echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01" value="'.$_SESSION['shipping']['adress1'].'"/>';
+							else echo '<input type="text" class="form-control" id="adress1" name="adress1" placeholder="Address line 01"/>';
+							if((!isset($_SESSION['shopped']['adress1']) || $_SESSION['shopped']['adress1'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                       
                       
                     </div>
                     <div class="col-md-12 form-group p_star">
 						<?php 
-						if(isset($_SESSION['shopped']['adress2']) && $_SESSION['shopped']['adress2'] != NULL)
-							echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" value="'.$_SESSION['shopped']['adress2'].'"/>';
-						else if(isset($_SESSION['shipping']['adress2']) && $_SESSION['shipping']['adress2'] != NULL)
-							echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" value="'.$_SESSION['shipping']['adress2'].'"/>';
-						else echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" />';
+							if(isset($_SESSION['shopped']['adress2']) && $_SESSION['shopped']['adress2'] != NULL)
+								echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" value="'.$_SESSION['shopped']['adress2'].'"/>';
+							else if(isset($_SESSION['shipping']['adress2']) && $_SESSION['shipping']['adress2'] != NULL)
+								echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" value="'.$_SESSION['shipping']['adress2'].'"/>';
+							else echo '<input type="text" class="form-control" id="adress2" name="adress2" placeholder="Address line 02" />';
 						
 						?>
                       
@@ -347,51 +332,45 @@
                     </div>
                     <div class="col-md-12 form-group p_star">
 						<?php 
-						if(isset($_SESSION['shopped']['city']) && $_SESSION['shopped']['city'] != '')
-							echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City" value="'.$_SESSION['shopped']['city'].'"/>';
-						
-						else if(isset($_SESSION['shipping']['city']) && $_SESSION['shipping']['city'] != NULL)
-							echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City" value="'.$_SESSION['shipping']['city'].'"/>';
-						
-						else echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City"/>';
-						if((!isset($_SESSION['shopped']['city']) || $_SESSION['shopped']['city'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
+							if(isset($_SESSION['shopped']['city']) && $_SESSION['shopped']['city'] != '')
+								echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City" value="'.$_SESSION['shopped']['city'].'"/>';
 							
+							else if(isset($_SESSION['shipping']['city']) && $_SESSION['shipping']['city'] != NULL)
+								echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City" value="'.$_SESSION['shipping']['city'].'"/>';
 							
-						} 
+							else echo '<input type="text" class="form-control" id="city" name="city" placeholder="Town/City"/>';
+							if((!isset($_SESSION['shopped']['city']) || $_SESSION['shopped']['city'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                       
                       
                     </div>
                     <div class="col-md-12 form-group p_star">
-					<?php 
-						if(isset($_SESSION['shopped']['district']) && $_SESSION['shopped']['district'] != '')
-							echo '<input type="text" class="form-control" id="district" name="district" placeholder="District" value="'.$_SESSION['shopped']['district'].'"/>';
-						
-						else if(isset($_SESSION['shipping']['district']) && $_SESSION['shipping']['district'] != NULL)
-							echo '<input type="text" class="form-control" id="district" name="district" placeholder="District" value="'.$_SESSION['shipping']['district'].'"/>';
-						 
-							else echo '<input type="text" class="form-control" id="district" name="district" placeholder="District"/>';
-						if((!isset($_SESSION['shopped']['district']) || $_SESSION['shopped']['district'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
+						<?php 
+							if(isset($_SESSION['shopped']['district']) && $_SESSION['shopped']['district'] != '')
+								echo '<input type="text" class="form-control" id="district" name="district" placeholder="District" value="'.$_SESSION['shopped']['district'].'"/>';
 							
-							
-						} 
+							else if(isset($_SESSION['shipping']['district']) && $_SESSION['shipping']['district'] != NULL)
+								echo '<input type="text" class="form-control" id="district" name="district" placeholder="District" value="'.$_SESSION['shipping']['district'].'"/>';
+							 
+								else echo '<input type="text" class="form-control" id="district" name="district" placeholder="District"/>';
+							if((!isset($_SESSION['shopped']['district']) || $_SESSION['shopped']['district'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                       
                     </div>
                     <div class="col-md-12 form-group">
-					<?php 
-						 if(isset($_SESSION['shopped']['zip']) && $_SESSION['shopped']['zip'] != '')
-							echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"  value="'.$_SESSION['shopped']['zip'].'"/>';
-						else if(isset($_SESSION['shipping']['zip']) && $_SESSION['shipping']['zip'] != NULL)
-							echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"  value="'.$_SESSION['shipping']['zip'].'"/>';
-						else echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />';
-						if((!isset($_SESSION['shopped']['zip']) || $_SESSION['shopped']['zip'] == '') && isset($_SESSION['bad'])){
-							echo $_SESSION['bad'];
-							
-							
-						} 
+						<?php 
+							 if(isset($_SESSION['shopped']['zip']) && $_SESSION['shopped']['zip'] != '')
+								echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"  value="'.$_SESSION['shopped']['zip'].'"/>';
+							else if(isset($_SESSION['shipping']['zip']) && $_SESSION['shipping']['zip'] != NULL)
+								echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP"  value="'.$_SESSION['shipping']['zip'].'"/>';
+							else echo '<input type="text" class="form-control" id="zip" name="zip" placeholder="Postcode/ZIP" />';
+							if((!isset($_SESSION['shopped']['zip']) || $_SESSION['shopped']['zip'] == '') && isset($_SESSION['bad'])){
+								echo $_SESSION['bad'];
+							} 
 						?>
                       
                     </div>
@@ -402,52 +381,48 @@
                     <div class="billing_details" style="margin-left: 10%;">
 						<div class="row">
 							<div class="col-md-12 form-group p_star">
-							<?php if(isset($_SESSION['shipping']['card']) && $_SESSION['shipping']['card'] != NULL)
-								echo '<input type="text" class="form-control" id="card" name="card" placeholder="Card Number" value="'.$_SESSION['shipping']['card'].'"/>';
-							else echo '<input type="text" class="form-control" id="card" name="card" placeholder="Card Number"/>';
-							if((!isset($_SESSION['shopped']['card']) || $_SESSION['shopped']['zip'] == '') && isset($_SESSION['e_card'])){
-								echo $_SESSION['e_card'];
-								
-								
-							} 
+							<?php 	
+								if(isset($_SESSION['shipping']['card']) && $_SESSION['shipping']['card'] != NULL)
+									echo '<input type="text" class="form-control" id="card" name="card" placeholder="Card Number" value="'.$_SESSION['shipping']['card'].'"/>';
+								else echo '<input type="text" class="form-control" id="card" name="card" placeholder="Card Number"/>';
+								if((!isset($_SESSION['shopped']['card']) || $_SESSION['shopped']['zip'] == '') && isset($_SESSION['e_card'])){
+									echo $_SESSION['e_card'];
+								} 
 							?>
 							  
 							  
 							</div>
 							<div class="col-md-12 form-group p_star">
-							<?php if(isset($_SESSION['shipping']['cvv']) && $_SESSION['shipping']['cvv'] != NULL)
-								echo '<input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" value="'.$_SESSION['shipping']['cvv'].'"/>';
-							else echo '<input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV"/>';
-							if((!isset($_SESSION['shopped']['cvv']) || $_SESSION['shopped']['cvv'] == '') && isset($_SESSION['e_cvv'])){
-								echo $_SESSION['e_cvv'];
-								
-								
-							} 
+							<?php 
+								if(isset($_SESSION['shipping']['cvv']) && $_SESSION['shipping']['cvv'] != NULL)
+									echo '<input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" value="'.$_SESSION['shipping']['cvv'].'"/>';
+								else echo '<input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV"/>';
+								if((!isset($_SESSION['shopped']['cvv']) || $_SESSION['shopped']['cvv'] == '') && isset($_SESSION['e_cvv'])){
+									echo $_SESSION['e_cvv'];
+								} 
 							?>
 							  
 							  
 							</div>
 							<div class="col-md-2 form-group p_star">
-							<?php if(isset($_SESSION['shipping']['month']) && $_SESSION['shipping']['month'] != NULL)
-								echo '<input type="text" class="form-control" id="month" name="month" placeholder="month" value="'.$_SESSION['shipping']['month'].'"/>';
-							else echo '<input type="text" class="form-control" id="month" name="month" placeholder="month"/>';
-							if((!isset($_SESSION['shopped']['month']) || $_SESSION['shopped']['month'] == '') && isset($_SESSION['e_month'])){
-								echo $_SESSION['e_month'];
-								
-								
-							} 
+							<?php 
+								if(isset($_SESSION['shipping']['month']) && $_SESSION['shipping']['month'] != NULL)
+									echo '<input type="text" class="form-control" id="month" name="month" placeholder="month" value="'.$_SESSION['shipping']['month'].'"/>';
+								else echo '<input type="text" class="form-control" id="month" name="month" placeholder="month"/>';
+								if((!isset($_SESSION['shopped']['month']) || $_SESSION['shopped']['month'] == '') && isset($_SESSION['e_month'])){
+									echo $_SESSION['e_month'];
+								} 
 							?>
 							  
 							</div>
 							<div class="col-md-2 form-group p_star">
-							<?php if(isset($_SESSION['shipping']['year']) && $_SESSION['shipping']['year'] != NULL)
-								echo '<input type="text" class="form-control" id="year" name="year" placeholder="year" value="'.$_SESSION['shipping']['year'].'"/>';
-							else echo '<input type="text" class="form-control" id="year" name="year" placeholder="year"/>';
-							if((!isset($_SESSION['shopped']['year']) || $_SESSION['shopped']['year'] == '') && isset($_SESSION['e_card'])){
-								echo $_SESSION['e_year'];
-								
-								
-							} 
+							<?php
+								if(isset($_SESSION['shipping']['year']) && $_SESSION['shipping']['year'] != NULL)
+									echo '<input type="text" class="form-control" id="year" name="year" placeholder="year" value="'.$_SESSION['shipping']['year'].'"/>';
+								else echo '<input type="text" class="form-control" id="year" name="year" placeholder="year"/>';
+								if((!isset($_SESSION['shopped']['year']) || $_SESSION['shopped']['year'] == '') && isset($_SESSION['e_card'])){
+									echo $_SESSION['e_year'];
+								} 
 							?>
 							  
 							</div>
@@ -465,20 +440,21 @@
                           <span>Cart</span>
                         
                       </li>
-					  <?php
-						if(!empty($_SESSION["shopping_cart"])){
+						<?php
+							if(!empty($_SESSION["shopping_cart"])){
 						
-						foreach($_SESSION["shopping_cart"] as $keys => $values)
-						{
-					?>
+								foreach($_SESSION["shopping_cart"] as $keys => $values)
+								{
+						?>
                       <li>
                         <a ><?php echo $values["title"]; ?>
                           <span class="middle">x<?php echo $values["quantity"];?></span>
                           <span class="last">$<?php echo $values["price"]; ?></span>
                         </a>
                       </li>
-                      <?php }
-						}
+                      <?php 
+								}
+							}
 					?>
                     </ul>
 					
